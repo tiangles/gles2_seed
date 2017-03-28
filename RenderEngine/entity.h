@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 namespace GLES2 {
 
@@ -10,17 +11,15 @@ class Matrix4x4;
 class Entity
 {
 public:
-    Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> mat);
+    Entity(std::shared_ptr<Mesh> mesh);
     ~Entity();
 
 public:
-    auto mesh() const {return m_mesh; }
-    auto material() const {return m_material; }
-
+    void addMaterial(std::shared_ptr<Material> mat);
     void render(std::shared_ptr<Matrix4x4> projMatrix);
 private:
     std::shared_ptr<Mesh> m_mesh;
-    std::shared_ptr<Material> m_material;
+    std::vector<std::shared_ptr<Material> > m_materials;
     std::shared_ptr<Matrix4x4> m_modelMatrix;
 };
 

@@ -5,23 +5,30 @@
 #include "texture.h"
 
 using namespace GLES2;
-Entity::Entity(std::shared_ptr<Mesh> mesh, std::shared_ptr<Material> mat)
+Entity::Entity(std::shared_ptr<Mesh> mesh)
     :m_mesh(mesh)
-    ,m_material(mat)
 {
 
 }
 
 Entity::~Entity()
 {
+    m_materials.clear();
+}
 
+void Entity::addMaterial(std::shared_ptr<Material> mat)
+{
+    m_materials.push_back(mat);
 }
 
 void Entity::render(std::shared_ptr<Matrix4x4> projMatrix)
 {
-    auto tex = m_material->texture();
-    tex->bind();
-    auto shader = m_material->shaderProgram();
-    shader->use(projMatrix, m_modelMatrix);
-    m_mesh->render();
+    for(auto mat: m_materials)
+    {
+        auto tex = mat->texture();
+        tex->bind();
+        auto shader = mat->shaderProgram();
+        shader->use(projMatrix, m_modelMatrix);
+        m_mesh->render();
+    }
 }

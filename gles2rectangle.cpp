@@ -23,6 +23,13 @@ static const short indic[] = {
 
 GLES2Rectangle::GLES2Rectangle()
 {
+    //create mesh
+    std::shared_ptr<GLES2::Vertex> vertex = std::make_shared<GLES2::Vertex>();
+    vertex->build(vert, sizeof(vert)/sizeof(GLES2::VertexDataPCNT));
+    std::shared_ptr<GLES2::Indices> indices = std::make_shared<GLES2::Indices>();
+    indices->build(indic, sizeof(indic));
+    std::shared_ptr<GLES2::Mesh> mesh = std::make_shared<GLES2::Mesh>(vertex, indices);
+
     //create material
     std::shared_ptr<GLES2::Texture> tex = std::make_shared<GLES2::Texture>("crate.jpg");
     tex->build();
@@ -31,15 +38,9 @@ GLES2Rectangle::GLES2Rectangle()
     program->build();
     std::shared_ptr<GLES2::Material> mat = std::make_shared<GLES2::Material>(program, tex);
 
-    //create mesh
-    std::shared_ptr<GLES2::Vertex> vertex = std::make_shared<GLES2::Vertex>();
-    vertex->build(vert, sizeof(vert)/sizeof(GLES2::VertexDataPCNT));
-    std::shared_ptr<GLES2::Indices> indices = std::make_shared<GLES2::Indices>();
-    indices->build(indic, sizeof(indic));
-    std::shared_ptr<GLES2::Mesh> mesh = std::make_shared<GLES2::Mesh>(vertex, indices);
-
     //create entity
-    m_entity = std::make_shared<GLES2::Entity>(mesh, mat);
+    m_entity = std::make_shared<GLES2::Entity>(mesh);
+    m_entity->addMaterial(mat);
 }
 
 GLES2Rectangle::~GLES2Rectangle()
