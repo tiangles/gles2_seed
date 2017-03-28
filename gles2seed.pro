@@ -10,6 +10,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = gles2seed
 TEMPLATE = app
+CONFIG -= c++11
+
+QMAKE_CXXFLAGS += -std=c++14
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked as deprecated (the exact warnings
@@ -32,7 +35,8 @@ SOURCES += main.cpp\
     material.cpp \
     mesh.cpp \
     shaderprogram.cpp \
-    texture.cpp
+    texture.cpp \
+    vertex.cpp
 
 HEADERS  += mainwindow.h \
     gles2widget.h \

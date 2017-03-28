@@ -8,6 +8,11 @@ ShaderProgram::ShaderProgram()
     initializeOpenGLFunctions();
 }
 
+ShaderProgram::~ShaderProgram()
+{
+
+}
+
 void ShaderProgram::setShaderSource(const std::string &vertexSrc, const std::string &fragmentSrc)
 {
     m_vertexSrc = vertexSrc;
@@ -38,10 +43,10 @@ bool ShaderProgram::build()
     return true;
 }
 
-bool ShaderProgram::use(Matrix4x4& projMatrix)
+bool ShaderProgram::use(std::shared_ptr<Matrix4x4> projMatrix, std::shared_ptr<Matrix4x4> /*modelMatrix*/)
 {
     glUseProgram(m_glProgram);
-    glUniformMatrix4fv(m_projMatLocation, 1, 0, (const float*)projMatrix.buffer);
+    glUniformMatrix4fv(m_projMatLocation, 1, 0, (const float*)projMatrix->buffer);
     return false;
 }
 

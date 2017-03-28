@@ -1,23 +1,19 @@
 #pragma once
-#include <qopenglfunctions.h>
-
+#include <memory>
 namespace GLES2 {
-class Texture;
+class Entity;
+class Matrix4x4;
 }
 
-class GLES2Rectangle:public QOpenGLFunctions
+class GLES2Rectangle
 {
 public:
     GLES2Rectangle();
     ~GLES2Rectangle();
 
 public:
-    void render();
+    void render(std::shared_ptr<GLES2::Matrix4x4> projMatrix);
 
 private:
-    GLuint m_vertexObject;
-    GLuint m_colorObject;
-    GLuint m_indicesObject;
-
-    GLES2::Texture* m_tex;
+    std::shared_ptr<GLES2::Entity> m_entity;
 };

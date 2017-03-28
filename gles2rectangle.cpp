@@ -2,40 +2,44 @@
 #include "texture.h"
 #include "vec.h"
 #include "vertex.h"
-
-using namespace GLES2;
+#include "material.h"
+#include "shaderprogram.h"
+#include "shadersource.h"
+#include "mesh.h"
+#include "entity.h"
 
 static const float z = -0.1f;
 
-static const vertex vert[] = {
+static const GLES2::VertexDataPCNT vert[] = {
     {{-0.5f, -0.5f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {0, 1}},
     {{ 0.5f, -0.5f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {1, 1}},
     {{ 0.5f,  0.5f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {1, 0}},
     {{-0.5f,  0.5f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {0, 0}},
 };
 
-static const short indices[] = {
+static const short indic[] = {
     0, 1, 2, 0, 2, 3
 };
 
 GLES2Rectangle::GLES2Rectangle()
 {
-    initializeOpenGLFunctions();
+    //create material
+    std::shared_ptr<GLES2::Texture> tex = std::make_shared<GLES2::Texture>("crate.jpg");
+    tex->build();
+    std::shared_ptr<GLES2::ShaderProgram> program = std::make_shared<GLES2::ShaderProgram>();
+    program->setShaderSource(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
+    program->build();
+    std::shared_ptr<GLES2::Material> mat = std::make_shared<GLES2::Material>(program, tex);
 
-    m_tex = new Texture("/home/btian/workspace/crate.jpg");
-    m_tex->build();
+    //create mesh
+    std::shared_ptr<GLES2::Vertex> vertex = std::make_shared<GLES2::Vertex>();
+    vertex->build(vert, sizeof(vert)/sizeof(GLES2::VertexDataPCNT));
+    std::shared_ptr<GLES2::Indices> indices = std::make_shared<GLES2::Indices>();
+    indices->build(indic, sizeof(indic));
+    std::shared_ptr<GLES2::Mesh> mesh = std::make_shared<GLES2::Mesh>(vertex, indices);
 
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    glGenBuffers(1, &m_vertexObject);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vert), vert, GL_STATIC_DRAW);
-
-    glGenBuffers(1, &m_indicesObject);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indicesObject);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    //create entity
+    m_entity = std::make_shared<GLES2::Entity>(mesh, mat);
 }
 
 GLES2Rectangle::~GLES2Rectangle()
@@ -43,15 +47,7 @@ GLES2Rectangle::~GLES2Rectangle()
 
 }
 
-void GLES2Rectangle::render()
+void GLES2Rectangle::render(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
 {
-    m_tex->bind();
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
-    glVertexPointer(3, GL_FLOAT, sizeof(vertex), 0);
-    glTexCoordPointer(2, GL_FLOAT, sizeof(vertex), (void*)(sizeof(vec3) + sizeof(vec4) + sizeof(vec3)));
-
-    glColorPointer(4, GL_FLOAT, sizeof(vertex), (void*)(sizeof(vec3)));
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indicesObject);
-    glDrawElements(GL_TRIANGLES, sizeof(indices)/sizeof(short), GL_UNSIGNED_SHORT, 0);
+    m_entity->render(projMatrix);
 }

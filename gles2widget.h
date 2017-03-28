@@ -3,9 +3,9 @@
 
 #include <QOpenGLWidget>
 #include <qopenglfunctions.h>
+#include <memory>
 
 namespace GLES2 {
-class ShaderProgram;
 class Matrix4x4;
 }
 
@@ -27,10 +27,9 @@ protected:
     void paintGL();
 
 private:
-    GLES2::ShaderProgram* m_program;
     GLES2Rectangle* m_rect;
 
-    GLES2::Matrix4x4* m_projMatrix;
+    std::shared_ptr<GLES2::Matrix4x4> m_projMatrix;
 };
 
 #endif // GLES2WIDGET_H

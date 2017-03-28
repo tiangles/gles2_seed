@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <memory>
 #include <qopengl.h>
 #include <qopenglfunctions.h>
 
@@ -15,8 +16,7 @@ public:
 public:
     void setShaderSource(const std::string& vertexSrc, const std::string& fragmentSrc);
     bool build();
-    bool use(Matrix4x4& projMatrix);
-
+    bool use(std::shared_ptr<Matrix4x4> projMatrix, std::shared_ptr<Matrix4x4> modelMatrix);
 private:
     GLuint compile(const std::string &src, GLenum type);
     GLuint link(GLint vertexShader, GLint fragmentShader);
