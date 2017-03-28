@@ -27,26 +27,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
+    mainwindow.cpp \
     gles2widget.cpp \
     gles2rectangle.cpp \
-    matrix4x4.cpp \
-    entity.cpp \
-    material.cpp \
-    mesh.cpp \
-    shaderprogram.cpp \
-    texture.cpp \
-    vertex.cpp
+    RenderEngine/matrix4x4.cpp \
+    RenderEngine/entity.cpp \
+    RenderEngine/material.cpp \
+    RenderEngine/mesh.cpp \
+    RenderEngine/shaderprogram.cpp \
+    RenderEngine/texture.cpp \
+    RenderEngine/vertex.cpp
 
 HEADERS  += mainwindow.h \
     gles2widget.h \
     shadersource.h \
     gles2rectangle.h \
-    matrix4x4.h \
-    entity.h \
-    material.h \
-    mesh.h \
-    shaderprogram.h \
-    texture.h \
-    vec.h \
+    RenderEngine/matrix4x4.h \
+    RenderEngine/entity.h \
+    RenderEngine/material.h \
+    RenderEngine/mesh.h \
+    RenderEngine/shaderprogram.h \
+    RenderEngine/texture.h \
+    RenderEngine/vec.h \
     vertex.h

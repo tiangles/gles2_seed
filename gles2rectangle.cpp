@@ -1,12 +1,12 @@
 #include "gles2rectangle.h"
-#include "texture.h"
-#include "vec.h"
-#include "vertex.h"
-#include "material.h"
-#include "shaderprogram.h"
-#include "shadersource.h"
-#include "mesh.h"
-#include "entity.h"
+#include "RenderEngine/texture.h"
+#include "RenderEngine/vec.h"
+#include "RenderEngine/vertex.h"
+#include "RenderEngine/material.h"
+#include "RenderEngine/shaderprogram.h"
+#include "RenderEngine/shadersource.h"
+#include "RenderEngine/mesh.h"
+#include "RenderEngine/entity.h"
 
 static const float z = -0.1f;
 

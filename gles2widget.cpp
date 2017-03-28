@@ -1,7 +1,7 @@
 #include "gles2widget.h"
-#include "shaderprogram.h"
+#include "RenderEngine/shaderprogram.h"
 #include "gles2rectangle.h"
-#include "matrix4x4.h"
+#include "RenderEngine/matrix4x4.h"
 
 using namespace GLES2;
 
