@@ -15,7 +15,7 @@ const char* VERTEX_SHADER_SOURCE =
         "varying vec4 v_color; \n"
         "void main() \n"
         "{ \n"
-        "    gl_Position = u_mvMatrix*a_position; \n"
+        "    gl_Position = a_position; \n"
         "    gl_TexCoord[0]  = gl_MultiTexCoord0;\n"
         "} \n"
         ;
