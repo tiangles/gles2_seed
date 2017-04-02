@@ -33,8 +33,6 @@ bool ShaderProgram::build()
     glUseProgram(m_glProgram);
 
     m_projMatLocation = glGetUniformLocation(m_glProgram, "u_mvMatrix");
-    GLint location = glGetUniformLocation(m_glProgram, "u_texSampler_0");
-    glUniform1i(location, 0);
 
     GLenum err = glGetError();
     if(err != 0){
@@ -48,6 +46,21 @@ bool ShaderProgram::use(std::shared_ptr<Matrix4x4> projMatrix, std::shared_ptr<M
     glUseProgram(m_glProgram);
     glUniformMatrix4fv(m_projMatLocation, 1, 0, (const float*)projMatrix->buffer);
     return false;
+}
+
+void ShaderProgram::setUniformi(const std::string& name, int value)
+{
+    GLint loc = getLocation(name);
+    glUniform1i(loc, value);
+}
+
+GLint ShaderProgram::getLocation(const std::string &name)
+{
+    if(m_locations.find(name) == m_locations.end()){
+        GLint loc = glGetUniformLocation(m_glProgram, name.c_str());
+        m_locations[name] = loc;
+    }
+    return m_locations[name];
 }
 
 GLuint ShaderProgram::compile(const std::string &src, GLenum type)

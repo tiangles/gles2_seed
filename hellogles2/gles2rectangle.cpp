@@ -36,6 +36,7 @@ GLES2Rectangle::GLES2Rectangle()
     std::shared_ptr<GLES2::ShaderProgram> program = std::make_shared<GLES2::ShaderProgram>();
     program->setShaderSource(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
     program->build();
+    program->setUniformi("u_texSampler_0", 0);
     std::shared_ptr<GLES2::Material> mat = std::make_shared<GLES2::Material>(program, tex);
 
     //create entity
