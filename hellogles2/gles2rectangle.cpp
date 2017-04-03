@@ -37,7 +37,9 @@ GLES2Rectangle::GLES2Rectangle()
     program->setShaderSource(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
     program->build();
     program->setUniformi("u_texSampler_0", 0);
-    std::shared_ptr<GLES2::Material> mat = std::make_shared<GLES2::Material>(program, tex);
+    std::vector<std::shared_ptr<GLES2::Texture> > textures;
+    textures.push_back(tex);
+    std::shared_ptr<GLES2::Material> mat = std::make_shared<GLES2::Material>(program, textures);
 
     //create entity
     m_entity = std::make_shared<GLES2::Entity>(mesh);
@@ -51,5 +53,5 @@ GLES2Rectangle::~GLES2Rectangle()
 
 void GLES2Rectangle::render(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
 {
-    m_entity->render(projMatrix);
+    m_entity->render();
 }

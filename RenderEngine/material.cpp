@@ -1,9 +1,10 @@
 #include "material.h"
 
 using namespace GLES2;
-Material::Material(std::shared_ptr<ShaderProgram> shaderProgram, std::shared_ptr<Texture> texture)
+Material::Material(std::shared_ptr<ShaderProgram> shaderProgram,
+                   std::vector<std::shared_ptr<Texture> > textures)
     :m_shaderProgram(shaderProgram)
-    ,m_texture(texture)
+    ,m_textures(textures)
 {
 
 }

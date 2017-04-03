@@ -16,7 +16,8 @@ public:
 
 public:
     void addMaterial(std::shared_ptr<Material> mat);
-    void render(std::shared_ptr<Matrix4x4> projMatrix);
+    void render();
+
 private:
     std::shared_ptr<Mesh> m_mesh;
     std::vector<std::shared_ptr<Material> > m_materials;

@@ -11,6 +11,11 @@ struct VertexDataPCNT{
     vec2 tex;
 };
 
+struct VertexDataPT{
+    vec3 position;
+    vec2 tex;
+};
+
 class Vertex :public QOpenGLFunctions
 {
 public:
@@ -20,11 +25,21 @@ public:
 public:
     void build(std::vector<VertexDataPCNT> vert);
     void build(const VertexDataPCNT* vert, int count);
+    void build(std::vector<VertexDataPT> vert);
+    void build(const VertexDataPT* vert, int count);
+
     void bind();
 
 private:
+    enum VertexType{
+        NONE,
+        PCNT,
+        PT
+    };
+
     GLuint m_vertexObject;
     GLuint m_colorObject;
+    VertexType m_vertexType;
 };
 
 class Indices:public QOpenGLFunctions

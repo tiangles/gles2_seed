@@ -11,7 +11,7 @@ public:
     ~Texture();
 public:
     void build();
-    void bind();
+    void bind(int texUnit);
 
 private:
     QString m_texFileName;

@@ -21,14 +21,17 @@ void Entity::addMaterial(std::shared_ptr<Material> mat)
     m_materials.push_back(mat);
 }
 
-void Entity::render(std::shared_ptr<Matrix4x4> projMatrix)
+void Entity::render()
 {
     for(auto mat: m_materials)
     {
-        auto tex = mat->texture();
-        tex->bind();
+        auto texures = mat->textures();
+        int unit = 0;
+        for(auto tex: texures){
+            tex->bind(unit++);
+        }
         auto shader = mat->shaderProgram();
-        shader->use(projMatrix, m_modelMatrix);
+        shader->use();
         m_mesh->render();
     }
 }

@@ -1,11 +1,11 @@
 #include "shaderprogram.h"
 #include "matrix4x4.h"
+#include <fstream>
 
 using namespace GLES2;
 
 ShaderProgram::ShaderProgram()
 {
-    initializeOpenGLFunctions();
 }
 
 ShaderProgram::~ShaderProgram()
@@ -17,10 +17,30 @@ void ShaderProgram::setShaderSource(const std::string &vertexSrc, const std::str
 {
     m_vertexSrc = vertexSrc;
     m_fragmentSrc = fragmentSrc;
+    qWarning("%s", m_vertexSrc.c_str());
+}
+
+std::string ShaderProgram::readShader(const std::string& path){
+    std::ifstream file;
+    file.open(path, std::ios::binary|std::ios::in|std::ios::ate);
+    size_t size = file.tellg();
+    file.seekg (0, std::ios::beg);
+
+    std::string res(size, 0);
+    file.seekg (0, std::ios::beg);
+    file.read (&res[0], size);
+    file.close();
+    return std::move(res);
+}
+
+void ShaderProgram::loadFromFile(const std::string &vertexFile, const std::string &fragmentFile)
+{
+    setShaderSource(readShader(vertexFile), readShader(fragmentFile));
 }
 
 bool ShaderProgram::build()
 {
+    initializeOpenGLFunctions();
     if(m_glProgram != 0){
         glDeleteProgram(m_glProgram);
     }
@@ -29,22 +49,18 @@ bool ShaderProgram::build()
     GLint vertexShader = compile(m_vertexSrc, GL_VERTEX_SHADER);
     GLint fragmentShader = compile(m_fragmentSrc, GL_FRAGMENT_SHADER);
     m_glProgram = link(vertexShader, fragmentShader);
-
-    glUseProgram(m_glProgram);
-
-    m_projMatLocation = glGetUniformLocation(m_glProgram, "u_mvMatrix");
-
     GLenum err = glGetError();
     if(err != 0){
         err = 0;
     }
+    m_fragmentSrc.clear();
+    m_vertexSrc.clear();
     return true;
 }
 
-bool ShaderProgram::use(std::shared_ptr<Matrix4x4> projMatrix, std::shared_ptr<Matrix4x4> /*modelMatrix*/)
+bool ShaderProgram::use()
 {
     glUseProgram(m_glProgram);
-    glUniformMatrix4fv(m_projMatLocation, 1, 0, (const float*)projMatrix->buffer);
     return false;
 }
 

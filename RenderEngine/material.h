@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+#include <vector>
 
 namespace GLES2 {
 
@@ -9,16 +10,17 @@ class Texture;
 class Material
 {
 public:
-    Material(std::shared_ptr<ShaderProgram> shaderProgram, std::shared_ptr<Texture> texture);
+    Material(std::shared_ptr<ShaderProgram> shaderProgram,
+             std::vector<std::shared_ptr<Texture> > textures);
     ~Material();
 
 public:
     auto shaderProgram() const { return m_shaderProgram; }
-    auto texture() const { return m_texture; }
+    auto textures() const { return m_textures; }
 
 private:
     std::shared_ptr<ShaderProgram> m_shaderProgram;
-    std::shared_ptr<Texture> m_texture;
+    std::vector<std::shared_ptr<Texture> > m_textures;
 };
 
 }

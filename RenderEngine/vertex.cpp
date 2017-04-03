@@ -5,6 +5,7 @@ using namespace GLES2;
 Vertex::Vertex()
     :m_vertexObject(0)
     ,m_colorObject(0)
+    ,m_vertexType(NONE)
 
 {
     initializeOpenGLFunctions();
@@ -18,13 +19,7 @@ Vertex::~Vertex()
 
 void Vertex::build(std::vector<VertexDataPCNT> vert)
 {
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-    glGenBuffers(1, &m_vertexObject);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexDataPCNT)*vert.size(), vert.data(), GL_STATIC_DRAW);
+    build(vert.data(), vert.size());
 }
 
 void Vertex::build(const VertexDataPCNT* vert, int count)
@@ -36,16 +31,39 @@ void Vertex::build(const VertexDataPCNT* vert, int count)
     glGenBuffers(1, &m_vertexObject);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexDataPCNT)*count, vert, GL_STATIC_DRAW);
+    m_vertexType = PCNT;
 }
+
+void Vertex::build(std::vector<VertexDataPT> vert)
+{
+    build(vert.data(), vert.size());
+}
+
+void Vertex::build(const VertexDataPT* vert, int count)
+{
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    glGenBuffers(1, &m_vertexObject);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexDataPT)*count, vert, GL_STATIC_DRAW);
+    m_vertexType = PT;
+}
+
 
 void Vertex::bind()
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
 
-    glVertexPointer     (3, GL_FLOAT, sizeof(VertexDataPCNT), 0);
-    glColorPointer      (4, GL_FLOAT, sizeof(VertexDataPCNT), (void*)(sizeof(vec3)));
-    glNormalPointer     (   GL_FLOAT, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4)));
-    glTexCoordPointer   (2, GL_FLOAT, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4) + sizeof(vec3)));
+    if(m_vertexType == PCNT){
+        glVertexPointer     (3, GL_FLOAT, sizeof(VertexDataPCNT), 0);
+        glColorPointer      (4, GL_FLOAT, sizeof(VertexDataPCNT), (void*)(sizeof(vec3)));
+        glNormalPointer     (   GL_FLOAT, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4)));
+        glTexCoordPointer   (2, GL_FLOAT, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4) + sizeof(vec3)));
+    } else if(m_vertexType == PT){
+        glVertexPointer     (3, GL_FLOAT, sizeof(VertexDataPT), 0);
+        glTexCoordPointer   (2, GL_FLOAT, sizeof(VertexDataPT), (void*)(sizeof(vec3)));
+    }
 }
 
 Indices::Indices()
