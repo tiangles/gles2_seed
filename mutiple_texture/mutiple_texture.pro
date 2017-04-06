@@ -13,9 +13,14 @@ INCLUDEPATH += ./ \
 SOURCES += main.cpp\
     mainwindow.cpp \
     gles2widget.cpp \
-    gles2rectangle.cpp
+    fragment.cpp
 
 HEADERS  += mainwindow.h \
     gles2widget.h \
-    shadersource.h \
-    gles2rectangle.h
+    fragment.h
+
+OTHER_FILES +=
+
+DISTFILES += \
+    ../shaders/mt.frag \
+    ../shaders/mt.vert

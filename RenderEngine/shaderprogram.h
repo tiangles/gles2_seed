@@ -20,6 +20,8 @@ public:
     bool use();
 
     void setUniformi(const std::string& name, int value);
+    void setUniformf(const std::string& name, float value);
+    void setUniform2f(const std::string& name, float x, float y);
 
 private:
     GLint getLocation(const std::string& name);

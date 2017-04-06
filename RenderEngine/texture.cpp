@@ -4,8 +4,7 @@
 
 using namespace GLES2;
 
-Texture::Texture(const QString& path):
-    m_texFileName(path),
+Texture::Texture():
     m_texID(0)
 {
 }
@@ -18,7 +17,7 @@ Texture::~Texture()
     }
 }
 
-void Texture::build()
+void Texture::build(const std::string& path)
 {
     initializeOpenGLFunctions();
 
@@ -26,7 +25,7 @@ void Texture::build()
     GLint alignment;
 
     QImage tex;
-    tex.load(m_texFileName);
+    tex.load(path.c_str());
     tex = tex.convertToFormat(QImage::Format_RGBA8888);
     glGenTextures(1, &tex_id);
     glBindTexture( GL_TEXTURE_2D, tex_id );

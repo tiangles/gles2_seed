@@ -1,20 +1,19 @@
 #pragma once
-#include <QString>
 #include <qopenglfunctions.h>
+#include <string>
 
 namespace GLES2 {
 
 class Texture: private QOpenGLFunctions
 {
 public:
-    Texture(const QString& path);
+    Texture();
     ~Texture();
 public:
-    void build();
+    void build(const std::string& path);
     void bind(int texUnit);
 
 private:
-    QString m_texFileName;
     GLuint m_texID;
 };
 

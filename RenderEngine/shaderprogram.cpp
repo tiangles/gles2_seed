@@ -70,6 +70,18 @@ void ShaderProgram::setUniformi(const std::string& name, int value)
     glUniform1i(loc, value);
 }
 
+void ShaderProgram::setUniformf(const std::string &name, float value)
+{
+    GLint loc = getLocation(name);
+    glUniform1f(loc, value);
+}
+
+void ShaderProgram::setUniform2f(const std::string &name, float x, float y)
+{
+    GLint loc = getLocation(name);
+    glUniform2f(loc, x, y);
+}
+
 GLint ShaderProgram::getLocation(const std::string &name)
 {
     if(m_locations.find(name) == m_locations.end()){

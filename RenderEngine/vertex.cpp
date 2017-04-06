@@ -50,7 +50,6 @@ void Vertex::build(const VertexDataPT* vert, int count)
     m_vertexType = PT;
 }
 
-
 void Vertex::bind()
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
