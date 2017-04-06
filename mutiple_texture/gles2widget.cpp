@@ -16,7 +16,7 @@ GLES2Widget::~GLES2Widget()
 void GLES2Widget::initializeGL()
 {
     initializeOpenGLFunctions();
-    m_fragment = std::make_shared<Fragment>("/home/qnx/workspace/opengles2/");
+    m_fragment = std::make_shared<Fragment>("/home/btian/workspace/opengles2/");
 
     glClearColor(1.f, 1.f, 1.f, 1.f);
 }

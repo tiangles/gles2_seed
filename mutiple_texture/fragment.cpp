@@ -46,7 +46,6 @@ void Fragment::build()
     //create material
     m_shaderProgram = std::make_shared<GLES2::ShaderProgram>();
     m_shaderProgram->loadFromFile(m_resRoot + "shaders/mt.vert", m_resRoot + "shaders/mt.frag");
-    m_shaderProgram->build();
     m_shaderProgram->use();
 
     std::shared_ptr<GLES2::Material> mat = std::make_shared<GLES2::Material>(m_shaderProgram, loadTexture());

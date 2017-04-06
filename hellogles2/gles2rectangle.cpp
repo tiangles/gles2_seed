@@ -11,9 +11,9 @@
 static const float z = -0.5f;
 
 static const GLES2::VertexDataPCNT vert[] = {
-    {{-1.0f, -1.0f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {0, 2}},
-    {{ 1.0f, -1.0f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {2, 2}},
-    {{ 1.0f,  1.0f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {2, 0}},
+    {{-1.0f, -1.0f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {0, 1}},
+    {{ 1.0f, -1.0f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {1, 1}},
+    {{ 1.0f,  1.0f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {1, 0}},
     {{-1.0f,  1.0f, z}, {1.f, 1.f, 1.f, 1.f}, {0, 0, -1.f}, {0, 0}},
 };
 
@@ -31,11 +31,10 @@ GLES2Rectangle::GLES2Rectangle()
     std::shared_ptr<GLES2::Mesh> mesh = std::make_shared<GLES2::Mesh>(vertex, indices);
 
     //create material
-    std::shared_ptr<GLES2::Texture> tex = std::make_shared<GLES2::Texture>("/home/btian/workspace/crate.jpg");
-    tex->build();
+    std::shared_ptr<GLES2::Texture> tex = std::make_shared<GLES2::Texture>();
+    tex->build("/home/btian/workspace/opengles2/img/city.jpg");
     std::shared_ptr<GLES2::ShaderProgram> program = std::make_shared<GLES2::ShaderProgram>();
-    program->setShaderSource(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
-    program->build();
+    program->load(VERTEX_SHADER_SOURCE, FRAGMENT_SHADER_SOURCE);
     program->setUniformi("u_texSampler_0", 0);
     std::vector<std::shared_ptr<GLES2::Texture> > textures;
     textures.push_back(tex);

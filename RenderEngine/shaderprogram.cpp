@@ -13,54 +13,54 @@ ShaderProgram::~ShaderProgram()
 
 }
 
-void ShaderProgram::setShaderSource(const std::string &vertexSrc, const std::string &fragmentSrc)
-{
-    m_vertexSrc = vertexSrc;
-    m_fragmentSrc = fragmentSrc;
-    qWarning("%s", m_vertexSrc.c_str());
-}
-
-std::string ShaderProgram::readShader(const std::string& path){
-    std::ifstream file;
-    file.open(path, std::ios::binary|std::ios::in|std::ios::ate);
-    size_t size = file.tellg();
-    file.seekg (0, std::ios::beg);
-
-    std::string res(size, 0);
-    file.seekg (0, std::ios::beg);
-    file.read (&res[0], size);
-    file.close();
-    return std::move(res);
-}
-
-void ShaderProgram::loadFromFile(const std::string &vertexFile, const std::string &fragmentFile)
-{
-    setShaderSource(readShader(vertexFile), readShader(fragmentFile));
-}
-
-bool ShaderProgram::build()
+bool ShaderProgram::load(const std::string &vertexSrc, const std::string &fragmentSrc)
 {
     initializeOpenGLFunctions();
+    if(vertexSrc.empty() || fragmentSrc.empty()){
+        return false;
+    }
     if(m_glProgram != 0){
         glDeleteProgram(m_glProgram);
     }
 
     m_glProgram = 0;
-    GLint vertexShader = compile(m_vertexSrc, GL_VERTEX_SHADER);
-    GLint fragmentShader = compile(m_fragmentSrc, GL_FRAGMENT_SHADER);
+    GLint vertexShader = compile(vertexSrc, GL_VERTEX_SHADER);
+    GLint fragmentShader = compile(fragmentSrc, GL_FRAGMENT_SHADER);
     m_glProgram = link(vertexShader, fragmentShader);
     GLenum err = glGetError();
     if(err != 0){
-        err = 0;
+        return false;
     }
-    m_fragmentSrc.clear();
-    m_vertexSrc.clear();
     return true;
+}
+
+std::string ShaderProgram::readShader(const std::string& path){
+    std::ifstream file;
+    file.open(path, std::ios::binary|std::ios::in|std::ios::ate);
+    if(file.is_open()){
+        size_t size = file.tellg();
+        file.seekg (0, std::ios::beg);
+
+        std::string res(size, 0);
+        file.seekg (0, std::ios::beg);
+        file.read (&res[0], size);
+        file.close();
+        return std::move(res);
+    }
+    return std::string("");
+}
+
+bool ShaderProgram::loadFromFile(const std::string &vertexFile, const std::string &fragmentFile)
+{
+    return load(readShader(vertexFile), readShader(fragmentFile));
 }
 
 bool ShaderProgram::use()
 {
-    glUseProgram(m_glProgram);
+    if(m_glProgram != 0){
+        glUseProgram(m_glProgram);
+        return true;
+    }
     return false;
 }
 

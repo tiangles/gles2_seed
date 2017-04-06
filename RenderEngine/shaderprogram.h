@@ -14,9 +14,8 @@ public:
     ~ShaderProgram();
 
 public:
-    void setShaderSource(const std::string& vertexSrc, const std::string& fragmentSrc);
-    void loadFromFile(const std::string& vertexFile, const std::string& fragmentFile);
-    bool build();
+    bool load(const std::string& vertexSrc, const std::string& fragmentSrc);
+    bool loadFromFile(const std::string& vertexFile, const std::string& fragmentFile);
     bool use();
 
     void setUniformi(const std::string& name, int value);
@@ -31,10 +30,6 @@ private:
     std::string readShader(const std::string& path);
 private:
     GLuint m_glProgram = 0;
-    std::string m_vertexSrc;
-    std::string m_fragmentSrc;
-
-//    GLint m_projMatLocation;
     std::map<std::string, GLint> m_locations;
 };
 
