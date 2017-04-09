@@ -6,7 +6,7 @@ namespace GLES2 {
 
 class Mesh;
 class Material;
-class Matrix4x4;
+struct Matrix4x4;
 
 class Entity
 {
@@ -15,12 +15,14 @@ public:
     ~Entity();
 
 public:
-    void addMaterial(std::shared_ptr<Material> mat);
-    void render();
-
+    void setMaterial(std::shared_ptr<Material> mat);
+    //TODO: the model matrix reflect to model location
+    //it is better to have a node object(in scene tree) to matain this location
+    void render(std::shared_ptr<Matrix4x4> projMatrix,
+                std::shared_ptr<Matrix4x4> modelViewMatrix);
 private:
     std::shared_ptr<Mesh> m_mesh;
-    std::vector<std::shared_ptr<Material> > m_materials;
+    std::shared_ptr<Material> m_material;
     std::shared_ptr<Matrix4x4> m_modelMatrix;
 };
 

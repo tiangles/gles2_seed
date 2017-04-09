@@ -66,29 +66,58 @@ bool ShaderProgram::use()
 
 void ShaderProgram::setUniformi(const std::string& name, int value)
 {
-    GLint loc = getLocation(name);
+    GLint loc = getUniformLocation(name);
     glUniform1i(loc, value);
 }
 
 void ShaderProgram::setUniformf(const std::string &name, float value)
 {
-    GLint loc = getLocation(name);
+    GLint loc = getUniformLocation(name);
     glUniform1f(loc, value);
+}
+
+void ShaderProgram::setUniformfv(const std::string &name, int count, const float *value)
+{
+    GLint loc = getUniformLocation(name);
+    glUniform1fv(loc, count, value);
 }
 
 void ShaderProgram::setUniform2f(const std::string &name, float x, float y)
 {
-    GLint loc = getLocation(name);
+    GLint loc = getUniformLocation(name);
     glUniform2f(loc, x, y);
 }
 
-GLint ShaderProgram::getLocation(const std::string &name)
+void ShaderProgram::setUniformMatrix4fv(const std::string &name, const float *value)
 {
-    if(m_locations.find(name) == m_locations.end()){
+    GLint loc = getUniformLocation(name);
+    glUniformMatrix4fv(loc, 1, GL_TRUE, value);
+}
+
+GLint ShaderProgram::getUniformLocation(const std::string &name)
+{
+    if(m_uniformLocations.find(name) == m_uniformLocations.end()){
         GLint loc = glGetUniformLocation(m_glProgram, name.c_str());
-        m_locations[name] = loc;
+        if(loc != -1){
+            m_uniformLocations[name] = loc;
+            return loc;
+        } else {
+            return -1;
+        }
     }
-    return m_locations[name];
+    return m_uniformLocations[name];
+}
+
+GLint ShaderProgram::getAttribLocation(const std::string &name)
+{
+    if(m_attribLocations.find(name) == m_attribLocations.end()){
+        GLint loc = glGetAttribLocation(m_glProgram, name.c_str());
+        if(loc != -1){
+            m_attribLocations[name] = loc;
+            return loc;
+        }
+    }
+    return -1;
 }
 
 GLuint ShaderProgram::compile(const std::string &src, GLenum type)

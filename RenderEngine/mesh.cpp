@@ -1,5 +1,7 @@
 #include "mesh.h"
 #include "vertex.h"
+#include "material.h"
+#include "shaderprogram.h"
 
 using namespace GLES2;
 
@@ -15,8 +17,9 @@ Mesh::~Mesh()
 
 }
 
-void Mesh::render()
+void Mesh::render(std::shared_ptr<Material> material)
 {
-    m_vertex->bind();
+    auto shader = material->shaderProgram();
+    m_vertex->bind(shader->getAttribLocation("a_position"), -1, -1, shader->getAttribLocation("a_tex0"));
     m_indices->draw();
 }

@@ -28,7 +28,7 @@ public:
     void build(std::vector<VertexDataPT> vert);
     void build(const VertexDataPT* vert, int count);
 
-    void bind();
+    void bind(GLuint position, GLuint color, GLuint normal, GLuint texCoord);
 
 private:
     enum VertexType{

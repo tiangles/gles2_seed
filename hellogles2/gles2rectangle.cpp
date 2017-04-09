@@ -50,7 +50,7 @@ GLES2Rectangle::~GLES2Rectangle()
 
 }
 
-void GLES2Rectangle::render(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
+void GLES2Rectangle::render(std::shared_ptr<GLES2::Matrix4x4> /*projMatrix*/)
 {
     m_entity->render();
 }

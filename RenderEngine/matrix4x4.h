@@ -5,7 +5,7 @@ namespace GLES2 {
 struct Matrix4x4{
     Matrix4x4(){
         memset(buffer, 0, sizeof(float)*16);
-        buffer[3][3]  = 1;
+        buffer[0][0] = buffer[1][1] = buffer[2][2] = buffer[3][3] = 1;
     }
 
     Matrix4x4(
@@ -39,8 +39,13 @@ class Matrix4x4Util
 {
 public:
     static Matrix4x4
+    BuildViewportMatrix(float x, float y, float width, float height);
+    static Matrix4x4
     BuildOrthoMatrix(float left, float right, float bottom, float top, float zNear, float zFar);
-
+    static Matrix4x4
+    BuildFrustumMatrix(float left, float right, float bottom, float top, float nearZ, float farZ);
+    static Matrix4x4
+    BuildPerspectiveMatrix(float fovYDegrees, float aspect, float nearZ, float farZ);
 };
 
 }

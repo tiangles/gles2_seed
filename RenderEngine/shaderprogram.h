@@ -20,17 +20,21 @@ public:
 
     void setUniformi(const std::string& name, int value);
     void setUniformf(const std::string& name, float value);
+    void setUniformfv(const std::string& name, int count, const float* value);
     void setUniform2f(const std::string& name, float x, float y);
+    void setUniformMatrix4fv(const std::string& name, const float* value);
 
+    GLint getUniformLocation(const std::string& name);
+    GLint getAttribLocation(const std::string& name);
 private:
-    GLint getLocation(const std::string& name);
     GLuint compile(const std::string &src, GLenum type);
     GLuint link(GLint vertexShader, GLint fragmentShader);
 
     std::string readShader(const std::string& path);
 private:
     GLuint m_glProgram = 0;
-    std::map<std::string, GLint> m_locations;
+    std::map<std::string, GLint> m_uniformLocations;
+    std::map<std::string, GLint> m_attribLocations;
 };
 
 }

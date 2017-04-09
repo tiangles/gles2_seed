@@ -23,7 +23,7 @@ void GLES2Widget::initializeGL()
 
 void GLES2Widget::resizeGL(int w, int h)
 {
-    glViewport(0, 0, w/2, h/2);
+    glViewport(0, 0, w, h);
     m_fragment->resize(w, h);
 }
 
