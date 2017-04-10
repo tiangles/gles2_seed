@@ -16,4 +16,5 @@ public:
 
 private:
     std::shared_ptr<GLES2::Entity> m_entity;
+    std::shared_ptr<GLES2::Matrix4x4> m_modelViewMatrix;
 };

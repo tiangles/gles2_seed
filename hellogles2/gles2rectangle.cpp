@@ -42,7 +42,7 @@ GLES2Rectangle::GLES2Rectangle()
 
     //create entity
     m_entity = std::make_shared<GLES2::Entity>(mesh);
-    m_entity->addMaterial(mat);
+    m_entity->setMaterial(mat);
 }
 
 GLES2Rectangle::~GLES2Rectangle()
@@ -50,7 +50,7 @@ GLES2Rectangle::~GLES2Rectangle()
 
 }
 
-void GLES2Rectangle::render(std::shared_ptr<GLES2::Matrix4x4> /*projMatrix*/)
+void GLES2Rectangle::render(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
 {
-    m_entity->render();
+    m_entity->render(projMatrix, m_modelViewMatrix);
 }

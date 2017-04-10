@@ -31,7 +31,11 @@ void Entity::render(std::shared_ptr<Matrix4x4> projMatrix,
     }
     auto shader = m_material->shaderProgram();
     shader->use();
-    shader->setUniformMatrix4fv("u_projMatrix",         projMatrix->buffer[0]);
-    shader->setUniformMatrix4fv("u_modelViewMatrix",    modelViewMatrix->buffer[0]);
+    if(projMatrix){
+        shader->setUniformMatrix4fv("u_projMatrix",         projMatrix->buffer[0]);
+    }
+    if(modelViewMatrix){
+        shader->setUniformMatrix4fv("u_modelViewMatrix",    modelViewMatrix->buffer[0]);
+    }
     m_mesh->render(m_material);
 }

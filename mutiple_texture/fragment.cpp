@@ -5,6 +5,7 @@
 #include "RenderEngine/shaderprogram.h"
 #include "RenderEngine/texture.h"
 #include "RenderEngine/material.h"
+#include "RenderEngine/matrix4x4.h"
 
 Fragment::Fragment(const std::string& resRoot)
     :m_resRoot(resRoot)
@@ -20,7 +21,7 @@ void Fragment::resize(int width, int height)
 
 void Fragment::render()
 {
-    m_entity->render();
+    m_entity->render(m_projMatrix, m_modelViewMatrix);
 }
 
 void Fragment::build()
@@ -50,7 +51,7 @@ void Fragment::build()
 
     std::shared_ptr<GLES2::Material> mat = std::make_shared<GLES2::Material>(m_shaderProgram, loadTexture());
     m_entity = std::make_shared<GLES2::Entity>(mesh);
-    m_entity->addMaterial(mat);
+    m_entity->setMaterial(mat);
 }
 
 struct TextureUnit{

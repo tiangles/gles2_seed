@@ -41,9 +41,6 @@ void Vertex::build(std::vector<VertexDataPT> vert)
 
 void Vertex::build(const VertexDataPT* vert, int count)
 {
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
     glGenBuffers(1, &m_vertexObject);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexDataPT)*count, vert, GL_STATIC_DRAW);
@@ -55,21 +52,31 @@ void Vertex::bind(GLuint position, GLuint color, GLuint normal, GLuint texCoord)
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
 
     if(m_vertexType == PCNT){
-        glEnableVertexAttribArray(position);
-        glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), 0);
-        glEnableVertexAttribArray(color);
-        glVertexAttribPointer(color,    4, GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3)));
-        glEnableVertexAttribArray(normal);
-        glVertexAttribPointer(normal,   3,  GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4)));
-        glEnableVertexAttribArray(texCoord);
-        glVertexAttribPointer(texCoord, 2,  GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4) + sizeof(vec3)));
+        if(position != -1){
+            glEnableVertexAttribArray(position);
+            glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), 0);
+        }
+        if(color != -1){
+            glEnableVertexAttribArray(color);
+            glVertexAttribPointer(color,    4, GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3)));
+        }
+        if(normal != -1){
+            glEnableVertexAttribArray(normal);
+            glVertexAttribPointer(normal,   3,  GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4)));
+        }
+        if(texCoord != -1){
+            glEnableVertexAttribArray(texCoord);
+            glVertexAttribPointer(texCoord, 2,  GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4) + sizeof(vec3)));
+        }
     } else if(m_vertexType == PT){
-        glEnableVertexAttribArray(position);
-        glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPT), 0);
-        glEnableVertexAttribArray(texCoord);
-        glVertexAttribPointer(texCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexDataPT), (void*)(sizeof(vec3)));
-//        glVertexPointer(3, GL_FLOAT, sizeof(VertexDataPT), 0);
-//        glTexCoordPointer(2, GL_FLOAT, sizeof(VertexDataPT), (void*)(sizeof(vec3)));
+        if(position != -1){
+            glEnableVertexAttribArray(position);
+            glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPT), 0);
+        }
+        if(texCoord != -1){
+            glEnableVertexAttribArray(texCoord);
+            glVertexAttribPointer(texCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexDataPT), (void*)(sizeof(vec3)));
+        }
     }
 }
 
