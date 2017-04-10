@@ -1,7 +1,10 @@
 #pragma once
+
 #include <string.h>
 
 namespace GLES2 {
+struct vec3;
+
 struct Matrix4x4{
     Matrix4x4(){
         memset(buffer, 0, sizeof(float)*16);
@@ -31,6 +34,7 @@ struct Matrix4x4{
         buffer[3][2]  = m32;
         buffer[3][3]  = m33;
     }
+    Matrix4x4 operator* (const Matrix4x4& m) const;
 
     float buffer[4][4];
 };
@@ -46,6 +50,12 @@ public:
     BuildFrustumMatrix(float left, float right, float bottom, float top, float nearZ, float farZ);
     static Matrix4x4
     BuildPerspectiveMatrix(float fovYDegrees, float aspect, float nearZ, float farZ);
+    static Matrix4x4
+    BuildLookAtMatrix(const vec3& eye, const vec3& center, const vec3& up);
+    static Matrix4x4
+    BuildTranslateMatrix(float x, float y, float z);
+    static Matrix4x4
+    BuildRotateMatrix(const vec3& axis, float radians);
 };
 
 }
