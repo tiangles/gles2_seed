@@ -4,12 +4,23 @@
 namespace GLES2{
 
 struct vec4{
+    vec4()
+        :r(1), g(1), b(1), a(1){
+    }
+
+    vec4(float r, float g, float b, float a)
+        :r(r), g(g), b(b), a(a){
+    }
     float r;
     float g;
     float b;
     float a;
 };
+
 struct vec3{
+    vec3()
+        :x(0), y(0), z(0){
+    }
     vec3(float x, float y, float z)
         :x(x), y(y), z(z){
     }

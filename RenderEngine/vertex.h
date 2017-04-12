@@ -11,6 +11,12 @@ struct VertexDataPCNT{
     vec2 tex;
 };
 
+struct VertexDataPNT{
+    vec3 position;
+    vec3 normal;
+    vec2 tex;
+};
+
 struct VertexDataPT{
     vec3 position;
     vec2 tex;
@@ -25,15 +31,18 @@ public:
 public:
     void build(std::vector<VertexDataPCNT> vert);
     void build(const VertexDataPCNT* vert, int count);
+    void build(std::vector<VertexDataPNT> vert);
+    void build(const VertexDataPNT* vert, int count);
     void build(std::vector<VertexDataPT> vert);
     void build(const VertexDataPT* vert, int count);
 
-    void bind(GLuint position, GLuint color, GLuint normal, GLuint texCoord);
+    void bind(GLint position, GLint color, GLint normal, GLint texCoord);
 
 private:
     enum VertexType{
         NONE,
         PCNT,
+        PNT,
         PT
     };
 

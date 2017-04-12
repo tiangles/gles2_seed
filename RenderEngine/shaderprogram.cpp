@@ -76,6 +76,11 @@ void ShaderProgram::setUniformf(const std::string &name, float value)
     glUniform1f(loc, value);
 }
 
+void ShaderProgram::setUniform4f(const std::string& name, float x, float y, float z, float w){
+    GLint loc = getUniformLocation(name);
+    glUniform4f(loc, x, y, z, w);
+}
+
 void ShaderProgram::setUniformfv(const std::string &name, int count, const float *value)
 {
     GLint loc = getUniformLocation(name);
@@ -138,7 +143,9 @@ GLuint ShaderProgram::compile(const std::string &src, GLenum type)
         if (infoLength > 1) {
             std::vector<GLchar> infoLog(infoLength);
             glGetShaderInfoLog(result, infoLength, NULL, &infoLog[0]);
-            qWarning("%s", infoLog.data());
+            qWarning("Compile %s failed\n%s",
+                     type == GL_VERTEX_SHADER?"GL_VERTEX_SHADER":"GL_FRAGMENT_SHADER",
+                     infoLog.data());
         }
         glDeleteShader(result);
         result = 0;

@@ -140,3 +140,11 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4 &m) const{
 
     return r;
 }
+
+Matrix4x4& Matrix4x4::operator=(const Matrix4x4& m)
+{
+    if(this != &m){
+        memcpy(this, &m, sizeof(Matrix4x4));
+    }
+    return *this;
+}

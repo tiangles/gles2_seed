@@ -35,6 +35,7 @@ struct Matrix4x4{
         buffer[3][3]  = m33;
     }
     Matrix4x4 operator* (const Matrix4x4& m) const;
+    Matrix4x4& operator=(const Matrix4x4& m);
 
     float buffer[4][4];
 };

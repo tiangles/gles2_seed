@@ -24,14 +24,23 @@ void Vertex::build(std::vector<VertexDataPCNT> vert)
 
 void Vertex::build(const VertexDataPCNT* vert, int count)
 {
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
     glGenBuffers(1, &m_vertexObject);
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
     glBufferData(GL_ARRAY_BUFFER, sizeof(VertexDataPCNT)*count, vert, GL_STATIC_DRAW);
     m_vertexType = PCNT;
+}
+
+void Vertex::build(std::vector<VertexDataPNT> vert)
+{
+    build(vert.data(), vert.size());
+}
+
+void Vertex::build(const VertexDataPNT *vert, int count)
+{
+    glGenBuffers(1, &m_vertexObject);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexDataPNT)*count, vert, GL_STATIC_DRAW);
+    m_vertexType = PNT;
 }
 
 void Vertex::build(std::vector<VertexDataPT> vert)
@@ -47,7 +56,7 @@ void Vertex::build(const VertexDataPT* vert, int count)
     m_vertexType = PT;
 }
 
-void Vertex::bind(GLuint position, GLuint color, GLuint normal, GLuint texCoord)
+void Vertex::bind(GLint position, GLint color, GLint normal, GLint texCoord)
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
 
@@ -67,6 +76,19 @@ void Vertex::bind(GLuint position, GLuint color, GLuint normal, GLuint texCoord)
         if(texCoord != -1){
             glEnableVertexAttribArray(texCoord);
             glVertexAttribPointer(texCoord, 2,  GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4) + sizeof(vec3)));
+        }
+    } else if(m_vertexType == PNT){
+        if(position != -1){
+            glEnableVertexAttribArray(position);
+            glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPNT), 0);
+        }
+        if(normal != -1){
+            glEnableVertexAttribArray(normal);
+            glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPNT), (void*)(sizeof(vec3)));
+        }
+        if(texCoord != -1){
+            glEnableVertexAttribArray(texCoord);
+            glVertexAttribPointer(texCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexDataPNT), (void*)(sizeof(vec3) + sizeof(vec3)));
         }
     } else if(m_vertexType == PT){
         if(position != -1){

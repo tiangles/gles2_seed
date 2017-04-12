@@ -18,9 +18,11 @@ public:
 
 public:
     void apply(std::shared_ptr<ShaderProgram> shader);
-    void setAmbient(vec4 ambient){ m_ambient = ambient; }
-    void setDiffuse(vec4 diffuse){ m_diffuse = diffuse; }
-    void setSpecular(vec4 specular){ m_specular = specular; }
+
+    void setPosition(const vec3& pos) { m_lightPos = pos;}
+    void setAmbient(const vec4& ambient){ m_ambient = ambient; }
+    void setDiffuse(const vec4& diffuse){ m_diffuse = diffuse; }
+    void setSpecular(const vec4& specular){ m_specular = specular; }
 private:
     Type m_type;
 

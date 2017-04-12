@@ -20,6 +20,7 @@ public:
 
     void setUniformi(const std::string& name, int value);
     void setUniformf(const std::string& name, float value);
+    void setUniform4f(const std::string& name, float x, float y, float z, float w);
     void setUniformfv(const std::string& name, int count, const float* value);
     void setUniform2f(const std::string& name, float x, float y);
     void setUniformMatrix4fv(const std::string& name, const float* value);

@@ -8,7 +8,9 @@ SOURCES += \
     ../RenderEngine/shaderprogram.cpp \
     ../RenderEngine/texture.cpp \
     ../RenderEngine/vertex.cpp \
-    ../RenderEngine/camera.cpp
+    ../RenderEngine/camera.cpp \
+    ../RenderEngine/light.cpp
+
 
 HEADERS += \
     ../RenderEngine/matrix4x4.h \
@@ -19,4 +21,5 @@ HEADERS += \
     ../RenderEngine/texture.h \
     ../RenderEngine/vec.h \
     ../RenderEngine/vertex.h \
-    ../RenderEngine/camera.h
+    ../RenderEngine/camera.h \
+    ../RenderEngine/light.h
