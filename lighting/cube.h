@@ -2,6 +2,8 @@
 #include <memory>
 #include <vector>
 #include <qopenglfunctions.h>
+#include <QObject>
+#include <QTimer>
 
 namespace GLES2{
     class Entity;
@@ -11,8 +13,9 @@ namespace GLES2{
     class Light;
 }
 
-class Cube: public QOpenGLFunctions
+class Cube: public QObject, public QOpenGLFunctions
 {
+    Q_OBJECT
 public:
     Cube(const std::string& resRoot);
 
@@ -20,11 +23,15 @@ public:
     void render(std::shared_ptr<GLES2::Matrix4x4> viewMatrix);
     void resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix);
 
+public slots:
+    void onTimer();
+
 private:
     void build();
     std::vector<std::shared_ptr<GLES2::Texture> > loadTexture();
 
 private:
+    float m_rotate;
     std::string m_resRoot;
     std::shared_ptr<GLES2::ShaderProgram> m_shaderProgram;
     std::shared_ptr<GLES2::Entity> m_entity;

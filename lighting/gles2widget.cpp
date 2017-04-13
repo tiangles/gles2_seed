@@ -12,6 +12,11 @@ GLES2Widget::GLES2Widget(QWidget *parent) : QOpenGLWidget(parent)
     m_camera = std::make_shared<Camera>();
     m_modelviewMatrix = std::make_shared<Matrix4x4>();
     m_projMatrix = std::make_shared<Matrix4x4>();
+    m_timer = new QTimer();
+    connect(m_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    QSurfaceFormat f = format();
+    f.setSamples(49);
+    setFormat(f);
 }
 
 GLES2Widget::~GLES2Widget()
@@ -45,7 +50,8 @@ void GLES2Widget::initializeGL()
     glDepthFunc(GL_LEQUAL);
     glDepthMask(GL_TRUE);
 
-    m_camera->set(vec3(3, 3, 3), vec3(0, 0, 0), vec3(0, 0, -1));
+    m_camera->set(vec3(0, 0, 3), vec3(0, 0, 0), vec3(0, 1, 0));
+    m_timer->start(10);
 }
 
 void GLES2Widget::resizeGL(int w, int h)
@@ -59,4 +65,39 @@ void GLES2Widget::paintGL()
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     m_cube->resize(m_projMatrix);
     m_cube->render(m_camera->viewMatrix());
+}
+
+void GLES2Widget::keyReleaseEvent(QKeyEvent *event)
+{
+    float angle = 5*3.14/180;
+    switch(event->key()){
+    case Qt::Key_Up:
+        m_camera->roll(angle);
+        break;
+    case Qt::Key_Down:
+        m_camera->roll(-angle);
+        break;
+    case Qt::Key_Left:
+        m_camera->yaw(angle);
+        break;
+    case Qt::Key_Right:
+        m_camera->yaw(-angle);
+        break;
+    case Qt::Key_A:
+        m_camera->pitch(angle);
+        break;
+    case Qt::Key_S:
+        m_camera->pitch(-angle);
+        break;
+    default:
+        break;
+    }
+    update();
+    event->accept();
+}
+
+void GLES2Widget::onTimer()
+{
+    m_cube->onTimer();
+    update();
 }

@@ -11,15 +11,17 @@
 
 Cube::Cube(const std::string& resRoot)
     :m_resRoot(resRoot)
+    ,m_rotate(0)
 {
     initializeOpenGLFunctions();
     m_modelMatrix = std::make_shared<GLES2::Matrix4x4>();
     m_modelViewMatrix = std::make_shared<GLES2::Matrix4x4>();
     m_light = std::make_shared<GLES2::Light>(GLES2::Light::DIRECTIONAL);
-    m_light->setAmbient(GLES2::vec4(1.0, 1.0, 1.0, 1.0));
-    m_light->setDiffuse(GLES2::vec4(0.5, 0.5, 0.5, 1.0));
+    m_light->setAmbient(GLES2::vec4(0.4, 0.4, 0.4, 1.0));
+    m_light->setDiffuse(GLES2::vec4(1., 1., 1., 1.0));
     m_light->setPosition(GLES2::vec3(1000, 1000, 1000));
     build();
+
 }
 
 void Cube::resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
@@ -27,9 +29,17 @@ void Cube::resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
     m_projMatrix = projMatrix;
 }
 
+void Cube::onTimer()
+{
+    m_rotate += 1*3.14/180;
+    GLES2::Matrix4x4 m = GLES2::Matrix4x4Util::BuildRotateMatrix(GLES2::vec3(1, 1, 1), m_rotate);
+    m_modelMatrix->operator =(m);
+}
+
 void Cube::render(std::shared_ptr<GLES2::Matrix4x4> viewMatrix)
 {
     m_light->apply(m_shaderProgram);
+    m_shaderProgram->setUniformMatrix4fv("u_modelMatrix", m_modelMatrix->buffer[0]);
     m_modelViewMatrix->operator =(*viewMatrix *(*m_modelMatrix));
     m_entity->render(m_projMatrix, m_modelViewMatrix);
 }
@@ -71,7 +81,7 @@ void Cube::build()
 
     static const short indic[] = {
         0,  1,  2,  0,  2,  3,   // front
-        4,  5,  6,  4,  6,  7,   // back
+        4,  6,  5,  4,  7,  6,   // back
         8,  10, 9,  8,  11, 10,   //top
         12, 13, 14, 12, 14, 15,   //bottom
         16, 18, 17, 16, 19, 18,   //right

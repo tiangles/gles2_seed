@@ -12,3 +12,8 @@ MainWindow::~MainWindow()
 {
 
 }
+
+void MainWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    m_glWidget->keyReleaseEvent(event);
+}

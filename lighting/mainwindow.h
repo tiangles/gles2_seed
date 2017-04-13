@@ -15,6 +15,10 @@ public:
 
 private:
     GLES2Widget* m_glWidget;
+
+    // QWidget interface
+protected:
+    void keyReleaseEvent(QKeyEvent *event);
 };
 
 #endif // MAINWINDOW_H

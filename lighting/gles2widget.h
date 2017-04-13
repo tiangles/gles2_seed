@@ -16,9 +16,12 @@ class GLES2Widget : public QOpenGLWidget, public QOpenGLFunctions
 public:
     explicit GLES2Widget(QWidget *parent = 0);
     ~GLES2Widget();
-signals:
+
+public:
+    void keyReleaseEvent(QKeyEvent *event);
 
 public slots:
+    void onTimer();
 
 protected:
     void wheelEvent(QWheelEvent *event);
@@ -31,6 +34,8 @@ private:
     std::shared_ptr<Cube> m_cube;
     std::shared_ptr<GLES2::Matrix4x4> m_projMatrix;
     std::shared_ptr<GLES2::Matrix4x4> m_modelviewMatrix;
+    QTimer* m_timer;
+
 };
 
 #endif // GLES2WIDGET_H
