@@ -20,6 +20,6 @@ Mesh::~Mesh()
 void Mesh::render(std::shared_ptr<Material> material)
 {
     auto shader = material->shaderProgram();
-    m_vertex->bind(shader->getAttribLocation("a_position"), -1, -1, shader->getAttribLocation("a_tex0"));
+    m_vertex->bind(shader->getAttribLocation("a_position"), -1, shader->getAttribLocation("a_normal"), shader->getAttribLocation("a_tex0"));
     m_indices->draw();
 }
