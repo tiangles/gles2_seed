@@ -13,6 +13,8 @@ public:
 
 public:
     auto viewMatrix() const {return m_matrix;}
+    bool dirty() const { return m_dirty; }
+    void unsetDirty() { m_dirty = false; }
 
     void set(vec3 eye, vec3 lookAt, vec3 up);
     void move(float x, float y, float z);
@@ -23,6 +25,7 @@ public:
 private:
     void update(const Matrix4x4& mat);
 private:
+    bool m_dirty;
     std::shared_ptr<Matrix4x4> m_matrix;
 };
 

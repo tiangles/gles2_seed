@@ -1,6 +1,7 @@
 #pragma once
 #include "vec.h"
 #include <qopenglfunctions.h>
+#include <memory>
 
 namespace GLES2 {
 
@@ -22,6 +23,8 @@ struct VertexDataPT{
     vec2 tex;
 };
 
+class ShaderProgram;
+
 class Vertex :public QOpenGLFunctions
 {
 public:
@@ -36,7 +39,7 @@ public:
     void build(std::vector<VertexDataPT> vert);
     void build(const VertexDataPT* vert, int count);
 
-    void bind(GLint position, GLint color, GLint normal, GLint texCoord);
+    void bind(std::shared_ptr<ShaderProgram> shader);
 
 private:
     enum VertexType{

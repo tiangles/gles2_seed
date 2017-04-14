@@ -19,7 +19,11 @@ public:
     //TODO: the model matrix reflect to model location
     //it is better to have a node object(in scene tree) to matain this location
     void render(std::shared_ptr<Matrix4x4> projMatrix,
-                std::shared_ptr<Matrix4x4> modelViewMatrix);
+                std::shared_ptr<Matrix4x4> modelMatrix,
+                std::shared_ptr<Matrix4x4> viewMatrix,
+                std::shared_ptr<Matrix4x4> modelViewMatrix,
+                std::shared_ptr<Matrix4x4> modelViewProjMatrix);
+
 private:
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;

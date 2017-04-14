@@ -58,13 +58,14 @@ void GLES2Widget::resizeGL(int w, int h)
 {
     Matrix4x4 mat = Matrix4x4Util::BuildPerspectiveMatrix(45.0, (float)w/h, 1.0f, 10000.0);
     memcpy(m_projMatrix->buffer, mat.buffer, sizeof(mat));
+    m_cube->resize(m_projMatrix);
 }
 
 void GLES2Widget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    m_cube->resize(m_projMatrix);
-    m_cube->render(m_camera->viewMatrix());
+    m_cube->render(m_camera);
+    m_camera->unsetDirty();
 }
 
 void GLES2Widget::keyReleaseEvent(QKeyEvent *event)

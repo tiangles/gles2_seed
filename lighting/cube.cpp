@@ -8,25 +8,32 @@
 #include "RenderEngine/matrix4x4.h"
 #include "RenderEngine/light.h"
 #include "RenderEngine/vec.h"
+#include "RenderEngine/camera.h"
 
 Cube::Cube(const std::string& resRoot)
     :m_resRoot(resRoot)
     ,m_rotate(0)
+    ,m_updated(true)
 {
     initializeOpenGLFunctions();
+
+    build();
+
+    m_projMatrix = std::make_shared<GLES2::Matrix4x4>();
     m_modelMatrix = std::make_shared<GLES2::Matrix4x4>();
-    m_modelViewMatrix = std::make_shared<GLES2::Matrix4x4>();
+
     m_light = std::make_shared<GLES2::Light>(GLES2::Light::DIRECTIONAL);
     m_light->setAmbient(GLES2::vec4(0.4, 0.4, 0.4, 1.0));
     m_light->setDiffuse(GLES2::vec4(1., 1., 1., 1.0));
     m_light->setPosition(GLES2::vec3(1000, 1000, 1000));
-    build();
-
+    m_light->apply(m_shaderProgram);
 }
 
 void Cube::resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
 {
     m_projMatrix = projMatrix;
+    m_shaderProgram->setUniformMatrix4fv("u_projMatrix", m_projMatrix->buffer[0]);
+    m_updated = true;
 }
 
 void Cube::onTimer()
@@ -34,14 +41,26 @@ void Cube::onTimer()
     m_rotate += 1*3.14/180;
     GLES2::Matrix4x4 m = GLES2::Matrix4x4Util::BuildRotateMatrix(GLES2::vec3(1, 1, 1), m_rotate);
     m_modelMatrix->operator =(m);
+    m_updated = true;
 }
 
-void Cube::render(std::shared_ptr<GLES2::Matrix4x4> viewMatrix)
+void Cube::render(std::shared_ptr<GLES2::Camera> camera)
 {
-    m_light->apply(m_shaderProgram);
-    m_shaderProgram->setUniformMatrix4fv("u_modelMatrix", m_modelMatrix->buffer[0]);
-    m_modelViewMatrix->operator =(*viewMatrix *(*m_modelMatrix));
-    m_entity->render(m_projMatrix, m_modelViewMatrix);
+    auto nullMat = std::shared_ptr<GLES2::Matrix4x4>();
+
+    if(m_updated || camera->dirty()){
+        auto viewMatrix = camera->viewMatrix();
+        auto modelViewMatrix = std::make_shared<GLES2::Matrix4x4>();
+        auto modelViewProjMatrix = std::make_shared<GLES2::Matrix4x4>();
+        *modelViewMatrix = *viewMatrix *(*m_modelMatrix);
+        *modelViewProjMatrix = *m_projMatrix * *modelViewMatrix;
+
+        m_entity->render(nullMat, m_modelMatrix, viewMatrix, modelViewMatrix, modelViewProjMatrix);
+    } else {
+        m_entity->render(nullMat, nullMat, nullMat, nullMat, nullMat);
+    }
+
+    m_updated = false;
 }
 
 void Cube::build()

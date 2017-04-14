@@ -1,4 +1,5 @@
 #include "vertex.h"
+#include "shaderprogram.h"
 
 using namespace GLES2;
 
@@ -56,49 +57,63 @@ void Vertex::build(const VertexDataPT* vert, int count)
     m_vertexType = PT;
 }
 
-void Vertex::bind(GLint position, GLint color, GLint normal, GLint texCoord)
+void Vertex::bind(std::shared_ptr<ShaderProgram> shader)
 {
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
+    if(!shader || m_vertexObject == 0){
+        return;
+    }
 
-    if(m_vertexType == PCNT){
-        if(position != -1){
-            glEnableVertexAttribArray(position);
-            glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), 0);
-        }
-        if(color != -1){
-            glEnableVertexAttribArray(color);
-            glVertexAttribPointer(color,    4, GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3)));
-        }
-        if(normal != -1){
-            glEnableVertexAttribArray(normal);
-            glVertexAttribPointer(normal,   3,  GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4)));
-        }
-        if(texCoord != -1){
-            glEnableVertexAttribArray(texCoord);
-            glVertexAttribPointer(texCoord, 2,  GL_FLOAT, GL_FALSE, sizeof(VertexDataPCNT), (void*)(sizeof(vec3) + sizeof(vec4) + sizeof(vec3)));
-        }
-    } else if(m_vertexType == PNT){
-        if(position != -1){
-            glEnableVertexAttribArray(position);
-            glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPNT), 0);
-        }
-        if(normal != -1){
-            glEnableVertexAttribArray(normal);
-            glVertexAttribPointer(normal, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPNT), (void*)(sizeof(vec3)));
-        }
-        if(texCoord != -1){
-            glEnableVertexAttribArray(texCoord);
-            glVertexAttribPointer(texCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexDataPNT), (void*)(sizeof(vec3) + sizeof(vec3)));
-        }
-    } else if(m_vertexType == PT){
-        if(position != -1){
-            glEnableVertexAttribArray(position);
-            glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, sizeof(VertexDataPT), 0);
-        }
-        if(texCoord != -1){
-            glEnableVertexAttribArray(texCoord);
-            glVertexAttribPointer(texCoord, 2, GL_FLOAT, GL_FALSE, sizeof(VertexDataPT), (void*)(sizeof(vec3)));
-        }
+    GLint position = shader->getAttribLocation("a_position");
+    GLint color = shader->getAttribLocation("a_color");
+    GLint normal = shader->getAttribLocation("a_normal");
+    GLint texCoord = shader->getAttribLocation("a_texCoord0");
+
+    size_t possitionOffset = 0;
+    size_t colorOffset = 0;
+    size_t normalOffset = 0;
+    size_t texCoordOffset = 0;
+    size_t stride = 0;
+
+    switch(m_vertexType){
+    case PCNT:
+        possitionOffset = 0;
+        colorOffset = sizeof(vec3);
+        normalOffset = sizeof(vec3) + sizeof(vec4);
+        texCoordOffset = sizeof(vec3) + sizeof(vec4) + sizeof(vec3);
+        stride = sizeof(VertexDataPCNT);
+        break;
+    case PNT:
+        possitionOffset = 0;
+        normalOffset = sizeof(vec3);
+        texCoordOffset = sizeof(vec3) + sizeof(vec3);
+        stride = sizeof(VertexDataPNT);
+        break;
+    case PT:
+        possitionOffset = 0;
+        texCoordOffset = sizeof(vec3);
+        stride = sizeof(VertexDataPT);
+        break;
+        break;
+    default:
+        return;
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexObject);
+    if(position != -1){
+        glEnableVertexAttribArray(position);
+        glVertexAttribPointer(position, 3, GL_FLOAT, GL_FALSE, stride, (void*)(possitionOffset));
+    }
+    if(color != -1){
+        glEnableVertexAttribArray(color);
+        glVertexAttribPointer(color,    4, GL_FLOAT, GL_FALSE, stride, (void*)(colorOffset));
+    }
+    if(normal != -1){
+        glEnableVertexAttribArray(normal);
+        glVertexAttribPointer(normal,   3,  GL_FLOAT, GL_FALSE, stride, (void*)(normalOffset));
+    }
+    if(texCoord != -1){
+        glEnableVertexAttribArray(texCoord);
+        glVertexAttribPointer(texCoord, 2,  GL_FLOAT, GL_FALSE, stride, (void*)(texCoordOffset));
     }
 }
 
