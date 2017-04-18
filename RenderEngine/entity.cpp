@@ -4,6 +4,7 @@
 #include "mesh.h"
 #include "texture.h"
 #include "matrix4x4.h"
+#include "submesh.h"
 
 using namespace GLES2;
 Entity::Entity(std::shared_ptr<Mesh> mesh)
@@ -27,11 +28,7 @@ void Entity::render(std::shared_ptr<Matrix4x4> projMatrix,
                     std::shared_ptr<Matrix4x4> modelViewMatrix,
                     std::shared_ptr<Matrix4x4> modelViewProjMatrix)
 {
-    auto texures = m_material->textures();
-    int unit = 0;
-    for(auto tex: texures){
-        tex->bind(unit++);
-    }
+
     auto shader = m_material->shaderProgram();
     shader->use();
     if(projMatrix){
@@ -49,5 +46,11 @@ void Entity::render(std::shared_ptr<Matrix4x4> projMatrix,
     if(modelViewProjMatrix){
         shader->setUniformMatrix4fv("u_modelViewProjMatrix", modelViewProjMatrix->buffer[0]);
     }
-    m_mesh->render(shader);
+    auto subMeshes = m_mesh->subMeshes();
+    auto texures = m_material->textures();
+
+    for(size_t i=0; i<subMeshes.size(); ++i){
+        texures[i]->bind(0);
+        subMeshes[i]->render(shader);
+    }
 }

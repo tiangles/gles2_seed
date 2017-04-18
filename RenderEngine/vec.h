@@ -28,6 +28,17 @@ struct vec3{
     float y;
     float z;
 
+    vec3& operator=(vec4& vec){
+        x = vec.r;
+        y = vec.g;
+        z = vec.b;
+        return *this;
+    }
+
+    vec3 operator + (const vec3& vec){
+        return vec3(x+vec.x, y+vec.y, z+vec.z);
+    }
+
     float dotProduct(const vec3& vec) const {
         return x * vec.x + y * vec.y + z * vec.z;
     }

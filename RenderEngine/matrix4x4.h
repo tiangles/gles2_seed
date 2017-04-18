@@ -35,6 +35,7 @@ struct Matrix4x4{
         buffer[3][3]  = m33;
     }
     Matrix4x4 operator* (const Matrix4x4& m) const;
+    vec3 operator* (const vec3& m) const;
     Matrix4x4& operator=(const Matrix4x4& m);
 
     float buffer[4][4];
@@ -57,6 +58,8 @@ public:
     BuildTranslateMatrix(float x, float y, float z);
     static Matrix4x4
     BuildRotateMatrix(const vec3& axis, float radians);
+    static Matrix4x4
+    BuildRotateMatrix(float radians, float x, float y, float z);
 };
 
 }

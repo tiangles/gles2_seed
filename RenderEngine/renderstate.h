@@ -1,0 +1,4 @@
+#ifndef RENDERSTATE_H
+#define RENDERSTATE_H
+
+#endif // RENDERSTATE_H

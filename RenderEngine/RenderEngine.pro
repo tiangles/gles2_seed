@@ -9,7 +9,9 @@ SOURCES += \
     ../RenderEngine/texture.cpp \
     ../RenderEngine/vertex.cpp \
     ../RenderEngine/camera.cpp \
-    ../RenderEngine/light.cpp
+    ../RenderEngine/light.cpp \
+    ../RenderEngine/submesh.cpp \
+    ../RenderEngine/skybox.cpp
 
 
 HEADERS += \
@@ -22,4 +24,6 @@ HEADERS += \
     ../RenderEngine/vec.h \
     ../RenderEngine/vertex.h \
     ../RenderEngine/camera.h \
-    ../RenderEngine/light.h
+    ../RenderEngine/light.h \
+    ../RenderEngine/submesh.h \
+    ../RenderEngine/skybox.h

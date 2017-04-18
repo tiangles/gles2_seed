@@ -81,9 +81,12 @@ Matrix4x4 Matrix4x4Util::BuildTranslateMatrix(float x, float y, float z)
 
 Matrix4x4 Matrix4x4Util::BuildRotateMatrix(const vec3& axis, float radians)
 {
-    float x = axis.x;
-    float y = axis.y;
-    float z = axis.z;
+    return BuildRotateMatrix(radians, axis.x, axis.y, axis.z);
+}
+
+Matrix4x4
+Matrix4x4Util::BuildRotateMatrix(float radians, float x, float y, float z)
+{
     float vecLengthInverse = static_cast<float>(1.0 / sqrt(x * x + y * y + z * z ));
 
     if (vecLengthInverse != vecLengthInverse)
@@ -139,6 +142,15 @@ Matrix4x4 Matrix4x4::operator*(const Matrix4x4 &m) const{
     r.buffer[3][3] = buffer[3][0] * m.buffer[0][3] + buffer[3][1] * m.buffer[1][3] + buffer[3][2] * m.buffer[2][3] + buffer[3][3] * m.buffer[3][3];
 
     return r;
+}
+
+vec3 Matrix4x4::operator*(const vec3 &m) const
+{
+    float fInvW = 1.0f / (buffer[3][0] + buffer[3][1] + buffer[3][2] + buffer[3][3]);
+
+    return vec3((buffer[0][0]*m.x + buffer[0][1]*m.y + buffer[0][2]*m.z + buffer[0][3])*fInvW,
+                (buffer[1][0]*m.x + buffer[1][1]*m.y + buffer[1][2]*m.z + buffer[1][3])*fInvW,
+                (buffer[2][0]*m.x + buffer[2][1]*m.y + buffer[2][2]*m.z + buffer[2][3])*fInvW);
 }
 
 Matrix4x4& Matrix4x4::operator=(const Matrix4x4& m)

@@ -1,22 +1,21 @@
 #pragma once
+#include <vector>
 #include <memory>
 
 namespace GLES2 {
-class Vertex;
-class Indices;
-class ShaderProgram;
+class SubMesh;
 class Mesh
 {
 public:
-    Mesh(std::shared_ptr<Vertex> vertex, std::shared_ptr<Indices> indices);
+    Mesh();
     ~Mesh();
 
 public:
-    auto getVertex() const {return m_vertex; }
-    auto getIndices() const {return m_indices; }
-    void render(std::shared_ptr<ShaderProgram> shader);
+    void addSubMesh(std::shared_ptr<SubMesh> subMesh) { m_subMeshes.emplace_back(subMesh);}
+    size_t subMeshCount() const {return m_subMeshes.size();}
+    auto subMesh(size_t index) const { return m_subMeshes[index]; }
+    auto subMeshes() const { return m_subMeshes;}
 private:
-    std::shared_ptr<Vertex> m_vertex;
-    std::shared_ptr<Indices> m_indices;
+    std::vector<std::shared_ptr<SubMesh> > m_subMeshes;
 };
 }
