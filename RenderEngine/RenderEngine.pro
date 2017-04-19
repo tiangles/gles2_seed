@@ -11,7 +11,9 @@ SOURCES += \
     ../RenderEngine/camera.cpp \
     ../RenderEngine/light.cpp \
     ../RenderEngine/submesh.cpp \
-    ../RenderEngine/skybox.cpp
+    ../RenderEngine/skybox.cpp \
+    ../RenderEngine/textureunit.cpp \
+    ../RenderEngine/subentity.cpp
 
 
 HEADERS += \
@@ -26,4 +28,7 @@ HEADERS += \
     ../RenderEngine/camera.h \
     ../RenderEngine/light.h \
     ../RenderEngine/submesh.h \
-    ../RenderEngine/skybox.h
+    ../RenderEngine/skybox.h \
+    ../RenderEngine/textureunit.h \
+    ../RenderEngine/renderoperation.h \
+    ../RenderEngine/subentity.h

@@ -37,7 +37,6 @@ void GLES2Widget::wheelEvent(QWheelEvent *event)
 void GLES2Widget::initializeGL()
 {
     initializeOpenGLFunctions();
-//    m_cube = std::make_shared<Cube>("/home/btian/workspace/opengles2/");
     m_skybox = std::make_shared<Skybox>();
     std::vector<std::string> textures;
     textures.push_back("img/skybox/front.jpg");
@@ -47,7 +46,9 @@ void GLES2Widget::initializeGL()
     textures.push_back("img/skybox/right.jpg");
     textures.push_back("img/skybox/left.jpg");
     m_skybox->create("/home/btian/workspace/opengles2/", textures);
+
     glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+    glClearDepth(1.0f);
 
     glCullFace(GL_FRONT);
     glEnable(GL_CULL_FACE);
@@ -65,13 +66,11 @@ void GLES2Widget::initializeGL()
 void GLES2Widget::resizeGL(int w, int h)
 {
     m_camera->setAsPrespective(65.0, (float)w/h, 1.0f, 10000.0);
-//    m_cube->resize(m_camera->projMatrix());
 }
 
 void GLES2Widget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-//    m_cube->render(m_camera);
     m_skybox->render(m_camera);
 }
 
@@ -107,6 +106,5 @@ void GLES2Widget::keyReleaseEvent(QKeyEvent *event)
 void GLES2Widget::onTimer()
 {
     m_camera->yaw(0.25*3.14159268/180);
-//    m_camera->rotate(vec3(0, 1, 0), 0.25*3.14159268/180);
     update();
 }

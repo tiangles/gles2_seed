@@ -15,9 +15,3 @@ SubMesh::~SubMesh()
 {
 
 }
-
-void SubMesh::render(std::shared_ptr<ShaderProgram> shader)
-{
-    m_vertex->bind(shader);
-    m_indices->draw();
-}

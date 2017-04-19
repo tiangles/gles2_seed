@@ -1,12 +1,15 @@
 #pragma once
 #include <memory>
 #include <vector>
-
+#include "renderoperation.h"
 namespace GLES2 {
 
 class Mesh;
+class SubEntity;
+
 class Material;
 struct Matrix4x4;
+class RenderOperation;
 
 class Entity
 {
@@ -16,17 +19,14 @@ public:
 
 public:
     void setMaterial(std::shared_ptr<Material> mat);
-    //TODO: the model matrix reflect to model location
-    //it is better to have a node object(in scene tree) to matain this location
-    void render(std::shared_ptr<Matrix4x4> projMatrix,
-                std::shared_ptr<Matrix4x4> modelMatrix,
-                std::shared_ptr<Matrix4x4> viewMatrix,
-                std::shared_ptr<Matrix4x4> modelViewMatrix,
-                std::shared_ptr<Matrix4x4> modelViewProjMatrix);
 
+    std::vector<std::shared_ptr<RenderOperation> > getRenderOperation() const;
+    auto getSubEntities() const { return m_subEntities; }
 private:
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Material> m_material;
+
+    std::vector<std::shared_ptr<SubEntity> > m_subEntities;
     std::shared_ptr<Matrix4x4> m_modelMatrix;
 };
 

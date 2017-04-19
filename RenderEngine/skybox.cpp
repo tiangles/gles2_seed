@@ -7,7 +7,10 @@
 #include "mesh.h"
 #include "submesh.h"
 #include "texture.h"
+#include "textureunit.h"
 #include "material.h"
+#include "renderoperation.h"
+#include "subentity.h"
 
 using namespace GLES2;
 
@@ -72,19 +75,22 @@ void Skybox::create(const std::string& resRoot, std::vector<std::string> texture
         mesh->addSubMesh(subMesh);
     }
 
-    //create material
+    //create entity
+    m_entity = std::make_shared<Entity>(mesh);
+
+    //create and set material
     m_shaderProgram = std::make_shared<ShaderProgram>();
     m_shaderProgram->loadFromFile(resRoot + "shaders/skybox.vert", resRoot + "shaders/skybox.frag");
     //load textures
-    std::vector<std::shared_ptr<Texture> >  textures;
     for(size_t i=0; i<textureFiles.size(); ++i){
         auto tex = std::make_shared<Texture>();
         tex->build(resRoot + std::string(textureFiles[i]));
-        textures.push_back(tex);
+
+        auto mat = std::make_shared<Material>();
+        mat->setShaderProgram(m_shaderProgram);
+        mat->addTexture(tex);
+        m_entity->getSubEntities()[i]->setMaterial(mat);
     }
-    auto mat = std::make_shared<Material>(m_shaderProgram, textures);
-    m_entity = std::make_shared<Entity>(mesh);
-    m_entity->setMaterial(mat);
 }
 
 void Skybox::render(std::shared_ptr<Camera> camera)
@@ -102,5 +108,12 @@ void Skybox::render(std::shared_ptr<Camera> camera)
     *modelViewMatrix = *viewMatrix *(*m_modelMatrix);
     *modelViewProjMatrix = *projMatrix * *modelViewMatrix;
 
-    m_entity->render(projMatrix, m_modelMatrix, viewMatrix, modelViewMatrix, modelViewProjMatrix);
+    m_shaderProgram->use();
+    m_shaderProgram->setUniformMatrix4fv("u_modelViewProjMatrix", modelViewProjMatrix->buffer[0]);
+    for(auto ro: m_entity->getRenderOperation()){
+        ro->vertex->bind(m_shaderProgram);
+        ro->textures[0]->bind(0);
+        ro->indices->draw();
+    }
+
 }

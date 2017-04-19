@@ -10,16 +10,18 @@ class Texture;
 class Material
 {
 public:
-    Material(std::shared_ptr<ShaderProgram> shaderProgram,
-             std::vector<std::shared_ptr<Texture> > textures);
+    Material();
     ~Material();
 
 public:
-    auto shaderProgram() const { return m_shaderProgram; }
+    void setShaderProgram(std::shared_ptr<ShaderProgram> shader) { m_shader = shader; }
+    void addTexture(std::shared_ptr<Texture> texture) { m_textures.emplace_back(texture); }
+
+    auto shaderProgram() const { return m_shader; }
     auto textures() const { return m_textures; }
 
 private:
-    std::shared_ptr<ShaderProgram> m_shaderProgram;
+    std::shared_ptr<ShaderProgram> m_shader;
     std::vector<std::shared_ptr<Texture> > m_textures;
 };
 

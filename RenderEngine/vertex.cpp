@@ -10,7 +10,6 @@ Vertex::Vertex()
 
 {
     initializeOpenGLFunctions();
-
 }
 
 Vertex::~Vertex()

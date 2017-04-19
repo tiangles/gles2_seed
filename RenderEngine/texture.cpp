@@ -49,7 +49,7 @@ void Texture::build(const std::string& path)
     m_texID = tex_id;
 }
 
-void Texture::bind(int texUnit)
+void Texture::bind(GLuint texUnit)
 {
     if(m_texID != 0){
         glActiveTexture(GL_TEXTURE0 + texUnit);
