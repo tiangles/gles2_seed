@@ -68,7 +68,7 @@ void GLES2Widget::initializeGL()
 
 void GLES2Widget::resizeGL(int w, int h)
 {
-    m_camera->setAsPrespective(65.0, (float)w/h, 0.1f, 500.0);
+    m_camera->setAsPrespective(65.0, (float)w/h, 0.1f, 1000.0);
 }
 
 void GLES2Widget::paintGL()
@@ -109,7 +109,6 @@ void GLES2Widget::keyReleaseEvent(QKeyEvent *event)
 
 void GLES2Widget::onTimer()
 {
-    m_camera->yaw(0.25*3.14159268/180);
     m_cube->rotate();
     update();
 }
