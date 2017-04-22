@@ -39,7 +39,7 @@ void Cube::resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
     m_updated = true;
 }
 
-void Cube::onTimer()
+void Cube::rotate()
 {
     m_rotate += 1*3.14/180;
     GLES2::Matrix4x4 m = GLES2::Matrix4x4Util::BuildRotateMatrix(GLES2::vec3(1, 1, 1), m_rotate);
@@ -126,7 +126,10 @@ struct TextureUnit{
 
 std::shared_ptr<GLES2::Texture> Cube::loadTexture()
 {
-    auto tex = std::make_shared<GLES2::Texture>();
-    tex->build(m_resRoot + "img/crate.jpg");
-    return std::move(tex);
+//    auto tex = std::make_shared<GLES2::Texture>();
+//    tex->build(m_resRoot + "img/crate.jpg");
+//    return std::move(tex);
+    m_texture = std::make_shared<GLES2::Texture>();
+    m_texture->build(m_resRoot + "img/crate.jpg");
+    return m_texture;
 }

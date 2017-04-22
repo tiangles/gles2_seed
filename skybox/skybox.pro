@@ -12,12 +12,17 @@ INCLUDEPATH += ./ \
 
 SOURCES += main.cpp\
     mainwindow.cpp \
-    gles2widget.cpp
+    gles2widget.cpp \
+    cube.cpp
+
 HEADERS  += mainwindow.h \
-    gles2widget.h
+    gles2widget.h \
+    cube.h
 
 OTHER_FILES +=
 
 DISTFILES += \
     ../shaders/skybox.frag \
-    ../shaders/skybox.vert
+    ../shaders/skybox.vert \
+    ../shaders/light.frag \
+    ../shaders/light.vert

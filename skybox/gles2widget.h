@@ -8,6 +8,7 @@
 namespace GLES2 {
 class Matrix4x4;
 class Camera;
+class Renderer;
 class Skybox;
 }
 class Cube;
@@ -31,7 +32,9 @@ protected:
     void paintGL();
 
 private:
+    std::shared_ptr<GLES2::Renderer> m_renderer;
     std::shared_ptr<GLES2::Camera> m_camera;
+    std::shared_ptr<Cube> m_cube;
     std::shared_ptr<GLES2::Skybox> m_skybox;
     QTimer* m_timer;
 

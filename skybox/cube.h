@@ -26,7 +26,7 @@ public:
     void resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix);
 
 public slots:
-    void onTimer();
+    void rotate();
 
 private:
     void build();
@@ -45,4 +45,6 @@ private:
     float m_rotate;
 
     bool m_updated;
+
+    std::shared_ptr<GLES2::Texture> m_texture;
 };

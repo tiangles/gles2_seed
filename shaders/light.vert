@@ -12,7 +12,7 @@ varying vec3 v_normal;
 varying vec4 v_fragPos;
 
 void main() {
-    gl_Position = u_projMatrix*u_modelViewMatrix*a_position;
+    gl_Position = u_modelViewProjMatrix*a_position;
     gl_TexCoord[0]  = vec4(a_texCoord0, 1.0, 1.0);
     v_normal = a_normal;
     v_fragPos = u_modelMatrix * a_position;

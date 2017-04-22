@@ -119,10 +119,11 @@ GLint ShaderProgram::getAttribLocation(const std::string &name)
         GLint loc = glGetAttribLocation(m_glProgram, name.c_str());
         if(loc != -1){
             m_attribLocations[name] = loc;
-            return loc;
         }
+        return loc;
     }
-    return -1;
+
+    return m_attribLocations[name];
 }
 
 GLuint ShaderProgram::compile(const std::string &src, GLenum type)

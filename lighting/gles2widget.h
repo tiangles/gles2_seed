@@ -8,6 +8,7 @@
 namespace GLES2 {
 class Matrix4x4;
 class Camera;
+class Renderer;
 }
 class Cube;
 class GLES2Widget : public QOpenGLWidget, public QOpenGLFunctions
@@ -30,10 +31,9 @@ protected:
     void paintGL();
 
 private:
+    std::shared_ptr<GLES2::Renderer> m_renderer;
     std::shared_ptr<GLES2::Camera> m_camera;
     std::shared_ptr<Cube> m_cube;
-    std::shared_ptr<GLES2::Matrix4x4> m_projMatrix;
-    std::shared_ptr<GLES2::Matrix4x4> m_modelviewMatrix;
     QTimer* m_timer;
 
 };

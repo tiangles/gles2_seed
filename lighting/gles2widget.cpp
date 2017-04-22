@@ -2,6 +2,7 @@
 #include "RenderEngine/shaderprogram.h"
 #include "RenderEngine/matrix4x4.h"
 #include "RenderEngine/camera.h"
+#include "RenderEngine/renderer.h"
 #include "cube.h"
 #include <QWheelEvent>
 
@@ -9,9 +10,8 @@ using namespace GLES2;
 
 GLES2Widget::GLES2Widget(QWidget *parent) : QOpenGLWidget(parent)
 {
+    m_renderer = std::make_shared<Renderer>();
     m_camera = std::make_shared<Camera>();
-    m_modelviewMatrix = std::make_shared<Matrix4x4>();
-    m_projMatrix = std::make_shared<Matrix4x4>();
     m_timer = new QTimer();
     connect(m_timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     QSurfaceFormat f = format();
@@ -27,9 +27,9 @@ void GLES2Widget::wheelEvent(QWheelEvent *event)
 {
     float d = 0;
     if(event->delta()>0){
-        d = -0.5;
+        d = -1.5;
     } else if(event->delta()<0){
-        d = 0.5;
+        d = 1.5;
     }
     m_camera->move(0, 0, d);
     update();
@@ -38,8 +38,10 @@ void GLES2Widget::wheelEvent(QWheelEvent *event)
 void GLES2Widget::initializeGL()
 {
     initializeOpenGLFunctions();
-    m_cube = std::make_shared<Cube>("/home/btian/workspace/opengles2/");
+    m_cube = std::make_shared<Cube>(m_renderer, "/home/btian/workspace/opengles2/");
+
     glClearColor(0.5f, 0.5f, 0.5f, 0.5f);
+    glClearDepth(1.0f);
 
     glCullFace(GL_BACK);
     glEnable(GL_CULL_FACE);
@@ -56,16 +58,13 @@ void GLES2Widget::initializeGL()
 
 void GLES2Widget::resizeGL(int w, int h)
 {
-    Matrix4x4 mat = Matrix4x4Util::BuildPerspectiveMatrix(45.0, (float)w/h, 1.0f, 10000.0);
-    memcpy(m_projMatrix->buffer, mat.buffer, sizeof(mat));
-    m_cube->resize(m_projMatrix);
+    m_camera->setAsPrespective(45.0, (float)w/h, 0.1f, 100.0);
 }
 
 void GLES2Widget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     m_cube->render(m_camera);
-    m_camera->unsetDirty();
 }
 
 void GLES2Widget::keyReleaseEvent(QKeyEvent *event)
@@ -99,6 +98,7 @@ void GLES2Widget::keyReleaseEvent(QKeyEvent *event)
 
 void GLES2Widget::onTimer()
 {
-    m_cube->onTimer();
+    m_camera->yaw(0.25*3.14159268/180);
+    m_cube->rotate();
     update();
 }

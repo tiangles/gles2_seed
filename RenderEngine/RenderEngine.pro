@@ -13,7 +13,9 @@ SOURCES += \
     ../RenderEngine/submesh.cpp \
     ../RenderEngine/skybox.cpp \
     ../RenderEngine/textureunit.cpp \
-    ../RenderEngine/subentity.cpp
+    ../RenderEngine/subentity.cpp \
+    ../RenderEngine/renderer.cpp \
+    ../RenderEngine/batch.cpp
 
 
 HEADERS += \
@@ -31,4 +33,6 @@ HEADERS += \
     ../RenderEngine/skybox.h \
     ../RenderEngine/textureunit.h \
     ../RenderEngine/renderoperation.h \
-    ../RenderEngine/subentity.h
+    ../RenderEngine/subentity.h \
+    ../RenderEngine/renderer.h \
+    ../RenderEngine/batch.h

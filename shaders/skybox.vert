@@ -13,6 +13,5 @@ varying vec4 v_fragPos;
 
 void main() {
     gl_Position = u_modelViewProjMatrix*vec4(a_position, 1.0);
-
     gl_TexCoord[0]  = vec4(a_texCoord0, 1.0, 1.0);
 }

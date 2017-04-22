@@ -11,11 +11,13 @@
 #include "material.h"
 #include "renderoperation.h"
 #include "subentity.h"
+#include "renderer.h"
 
 using namespace GLES2;
 
 
-Skybox::Skybox()
+Skybox::Skybox(std::shared_ptr<Renderer> renderer)
+    :m_renderer(renderer)
 {
     m_modelMatrix = std::make_shared<Matrix4x4>();
 }
@@ -56,12 +58,12 @@ void Skybox::create(const std::string& resRoot, std::vector<std::string> texture
     };
 
     static const short indic[] = {
-        0,  1,  2,  0,  2,  3,   // front
-        4,  6,  5,  4,  7,  6,   // back
-        8,  10, 9,  8,  11, 10,   //top
-        12, 13, 14, 12, 14, 15,   //bottom
-        16, 18, 17, 16, 19, 18,   //right
-        20, 21, 22, 20, 22, 23,   //left
+        0,  2,  1,  0,  3,  2,   // front
+        4,  5,  6,  4,  6,  7,   // back
+        8,  9, 10,  8,  10, 11,   //top
+        12, 14, 13, 12, 15, 14,   //bottom
+        16, 17, 18, 16, 18, 19,   //right
+        20, 22, 21, 20, 23, 22,   //left
     };
     //create mesh
     auto mesh = std::make_shared<Mesh>();
@@ -95,25 +97,10 @@ void Skybox::create(const std::string& resRoot, std::vector<std::string> texture
 
 void Skybox::render(std::shared_ptr<Camera> camera)
 {
-    auto projMatrix = camera->projMatrix();
-    auto viewMatrix = camera->viewMatrix();
-    auto modelViewMatrix = std::make_shared<Matrix4x4>();
-    auto modelViewProjMatrix = std::make_shared<Matrix4x4>();
-
+    m_shaderProgram->use();
     vec3 cameraPos = camera->position();
     m_modelMatrix->buffer[0][3] = cameraPos.x;
     m_modelMatrix->buffer[1][3] = cameraPos.y;
     m_modelMatrix->buffer[2][3] = cameraPos.z;
-
-    *modelViewMatrix = *viewMatrix *(*m_modelMatrix);
-    *modelViewProjMatrix = *projMatrix * *modelViewMatrix;
-
-    m_shaderProgram->use();
-    m_shaderProgram->setUniformMatrix4fv("u_modelViewProjMatrix", modelViewProjMatrix->buffer[0]);
-    for(auto ro: m_entity->getRenderOperation()){
-        ro->vertex->bind(m_shaderProgram);
-        ro->textures[0]->bind(0);
-        ro->indices->draw();
-    }
-
+    m_renderer->render(camera, m_modelMatrix, m_entity->getRenderOperation());
 }
