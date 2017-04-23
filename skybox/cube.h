@@ -23,7 +23,6 @@ public:
 
 public:
     void render(std::shared_ptr<GLES2::Camera> camera);
-    void resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix);
 
 public slots:
     void rotate();
@@ -43,8 +42,6 @@ private:
 
     std::string m_resRoot;
     float m_rotate;
-
-    bool m_updated;
 
     std::shared_ptr<GLES2::Texture> m_texture;
 };

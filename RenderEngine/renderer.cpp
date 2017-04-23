@@ -28,11 +28,11 @@ void Renderer::updateProjection(std::shared_ptr<Camera> camera, std::shared_ptr<
     *m_modelViewMatrix = *viewMatrix * *modelMatrix;
     *m_modelViewProjMatrix = *projMatrix * *m_modelViewMatrix;
 
-     m_shader->setUniformMatrix4fv("u_projMatrix", projMatrix->buffer[0]);
-     m_shader->setUniformMatrix4fv("u_modelMatrix", modelMatrix->buffer[0]);
-     m_shader->setUniformMatrix4fv("u_viewMatrix", viewMatrix->buffer[0]);
-     m_shader->setUniformMatrix4fv("u_modelViewMatrix", m_modelViewMatrix->buffer[0]);
-     m_shader->setUniformMatrix4fv("u_modelViewProjMatrix", m_modelViewProjMatrix->buffer[0]);
+    m_shader->setUniformMatrix4fv("u_projMatrix", true, projMatrix->buffer[0]);
+    m_shader->setUniformMatrix4fv("u_modelMatrix", true, modelMatrix->buffer[0]);
+    m_shader->setUniformMatrix4fv("u_viewMatrix", true, viewMatrix->buffer[0]);
+    m_shader->setUniformMatrix4fv("u_modelViewMatrix", true, m_modelViewMatrix->buffer[0]);
+    m_shader->setUniformMatrix4fv("u_modelViewProjMatrix", true, m_modelViewProjMatrix->buffer[0]);
 }
 
 void Renderer::render(std::shared_ptr<RenderOperation> ro)

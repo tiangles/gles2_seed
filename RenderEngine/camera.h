@@ -22,7 +22,7 @@ public:
     void rotate(vec3 axis, float theta);
     void rotate(vec3 axis, vec3 pos, float theta);
     void slide(vec3 d);
-    void move(float x, float y, float z);
+    void translate(vec3 d);
     void roll(float angle);
     void pitch(float angle);
     void yaw(float angle);

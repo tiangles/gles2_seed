@@ -93,10 +93,10 @@ void ShaderProgram::setUniform2f(const std::string &name, float x, float y)
     glUniform2f(loc, x, y);
 }
 
-void ShaderProgram::setUniformMatrix4fv(const std::string &name, const float *value)
+void ShaderProgram::setUniformMatrix4fv(const std::string &name, bool transpose, const float *value)
 {
     GLint loc = getUniformLocation(name);
-    glUniformMatrix4fv(loc, 1, GL_TRUE, value);
+    glUniformMatrix4fv(loc, 1, transpose, value);
 }
 
 GLint ShaderProgram::getUniformLocation(const std::string &name)

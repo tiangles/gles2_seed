@@ -23,7 +23,7 @@ public:
     void setUniform4f(const std::string& name, float x, float y, float z, float w);
     void setUniformfv(const std::string& name, int count, const float* value);
     void setUniform2f(const std::string& name, float x, float y);
-    void setUniformMatrix4fv(const std::string& name, const float* value);
+    void setUniformMatrix4fv(const std::string& name, bool transpose, const float* value);
 
     GLint getUniformLocation(const std::string& name);
     GLint getAttribLocation(const std::string& name);

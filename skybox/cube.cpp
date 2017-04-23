@@ -16,7 +16,6 @@ Cube::Cube(std::shared_ptr<GLES2::Renderer> renderer, const std::string& resRoot
     :m_renderer(renderer)
     ,m_resRoot(resRoot)
     ,m_rotate(0)
-    ,m_updated(true)
 {
     initializeOpenGLFunctions();
 
@@ -32,25 +31,16 @@ Cube::Cube(std::shared_ptr<GLES2::Renderer> renderer, const std::string& resRoot
     m_light->apply(m_shaderProgram);
 }
 
-void Cube::resize(std::shared_ptr<GLES2::Matrix4x4> projMatrix)
-{
-    m_projMatrix = projMatrix;
-    m_shaderProgram->setUniformMatrix4fv("u_projMatrix", m_projMatrix->buffer[0]);
-    m_updated = true;
-}
-
 void Cube::rotate()
 {
     m_rotate += 1*3.14/180;
     GLES2::Matrix4x4 m = GLES2::Matrix4x4Util::BuildRotateMatrix(GLES2::vec3(1, 1, 1), m_rotate);
     m_modelMatrix->operator =(m);
-    m_updated = true;
 }
 
 void Cube::render(std::shared_ptr<GLES2::Camera> camera)
 {
     m_renderer->render(camera, m_modelMatrix, m_entity->getRenderOperation());
-    m_updated = false;
 }
 
 void Cube::build()

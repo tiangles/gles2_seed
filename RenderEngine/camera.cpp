@@ -38,10 +38,6 @@ void Camera::set(vec3 eye, vec3 at, vec3 up)
 
     m_up = m_direction.crossProduct(m_right);
 
-    vec3 v1 = m_right.crossProduct(m_up);
-    vec3 v2 = m_right.crossProduct(m_direction);
-    vec3 v3 = m_up.crossProduct(m_direction);
-
     m_needExtract = true;
     m_dirty = true;
 }
@@ -83,19 +79,30 @@ void Camera::rotate(vec3 axis, vec3 pos, float theta)
     m_dirty = true;
 }
 
-void Camera::move(float x, float y, float z)
+void Camera::slide(vec3 d)
 {
-    m_position.x += x;
-    m_position.y += y;
-    m_position.z += z;
+    vec3 fdp = Matrix4x4(
+        m_right.x, m_up.x, m_direction.x,   0,
+        m_right.y, m_up.y, m_direction.y,   0,
+        m_right.z, m_up.z, m_direction.z,   0,
+        0.f,       0.f,    0.f,             1.f) * d;
+
+    m_position.x += fdp.x;
+    m_position.y += fdp.y;
+    m_position.z += fdp.z;
 
     m_needExtract = true;
     m_dirty = true;
 }
 
-void Camera::slide(vec3 d)
+void Camera::translate(vec3 d)
 {
-    move(d.x, d.y, d.z);
+    m_position.x += d.x;
+    m_position.y += d.y;
+    m_position.z += d.z;
+
+    m_needExtract = true;
+    m_dirty = true;
 }
 
 void Camera::roll(float angle)
