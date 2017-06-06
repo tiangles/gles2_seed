@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     m_glWidget = new GLES2Widget(this);
     setCentralWidget(m_glWidget);
+    this->setGeometry(0, 0, 638, 960);
 }
 
 MainWindow::~MainWindow()

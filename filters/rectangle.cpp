@@ -16,7 +16,7 @@ Rectangle::Rectangle(const std::string& resourceFolder,
     ,m_renderer(renderer)
 {
     build();
-    setShader("embossment");
+    setShader("GaussianBlur");
 
     m_modelMatrix = std::make_shared<GLES2::Matrix4x4>();
     m_modelMatrix->buffer[0][0] = 6.38;
