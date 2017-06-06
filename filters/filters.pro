@@ -5,8 +5,6 @@ TEMPLATE = app
 
 CONFIG += c++14
 
-message($$QMAKE_CXXFLAGS)
-
 include (../RenderEngine/RenderEngine.pro)
 
 INCLUDEPATH += ./ \
@@ -24,7 +22,7 @@ HEADERS  += mainwindow.h \
 OTHER_FILES +=
 
 DISTFILES += \
+    ../shaders/fliters/Fliters.vert \
     ../shaders/fliters/Embossment.frag \
-    ../shaders/fliters/Embossment.vert \
     ../shaders/fliters/GaussianBlur.frag \
-    ../shaders/fliters/GaussianBlur.vert
+    ../shaders/fliters/Brightness.frag

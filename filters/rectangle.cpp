@@ -16,7 +16,7 @@ Rectangle::Rectangle(const std::string& resourceFolder,
     ,m_renderer(renderer)
 {
     build();
-    setShader("GaussianBlur");
+    setShader("Brightness");
 
     m_modelMatrix = std::make_shared<GLES2::Matrix4x4>();
     m_modelMatrix->buffer[0][0] = 6.38;
@@ -60,7 +60,7 @@ void Rectangle::setShader(const std::string &name)
     //create material
     m_shaderProgram = std::make_shared<GLES2::ShaderProgram>();
     std::string fileName = m_resourceFolder + "shaders/fliters/" + name;
-    m_shaderProgram->loadFromFile(fileName + ".vert",
+    m_shaderProgram->loadFromFile(m_resourceFolder + "shaders/fliters/Fliters.vert",
                                   fileName + ".frag");
     m_shaderProgram->use();
 
