@@ -10,7 +10,7 @@ void main()
     
     int multiplier = 0;
     vec2 blurStep;
-    vec2 singleStepOffset = vec2(3.0, 3.0);
+    vec2 singleStepOffset = vec2(1.0/638.0, 1.0/960.0);
 
     vec2 blurCoordinates[GAUSSIAN_SAMPLES];
     for (int i = 0; i < GAUSSIAN_SAMPLES; i++)
