@@ -9,7 +9,9 @@
 
 using namespace GLES2;
 
-GLES2Widget::GLES2Widget(QWidget *parent) : QOpenGLWidget(parent)
+GLES2Widget::GLES2Widget(const QString& resourceRoot, QWidget *parent)
+    : QOpenGLWidget(parent)
+    , m_resourceRoot(resourceRoot)
 {
     m_renderer = std::make_shared<Renderer>();
     m_camera = std::make_shared<Camera>();
@@ -22,15 +24,14 @@ GLES2Widget::~GLES2Widget()
 {
 }
 
-void GLES2Widget::wheelEvent(QWheelEvent *event)
+void GLES2Widget::setShader(const QString &shaderName)
 {
-    float d = 0;
-    if(event->delta()>0){
-        d = -1.5;
-    } else if(event->delta()<0){
-        d = 1.5;
-    }
-    m_camera->slide(GLES2::vec3(0, 0, 1));
+    m_rectangle->setShader(shaderName.toStdString());
+    update();
+}
+
+void GLES2Widget::wheelEvent(QWheelEvent */*event*/)
+{
     update();
 }
 
@@ -52,7 +53,7 @@ void GLES2Widget::initializeGL()
 
     m_camera->set(vec3(0, 0, 0), vec3(0, 0, -1), vec3(0, 1, 0));
 
-    m_rectangle = std::make_shared<Rectangle>("/home/btian/workspace/opengles2/", m_renderer);
+    m_rectangle = std::make_shared<Rectangle>(m_resourceRoot.toStdString(), m_renderer);
 }
 
 void GLES2Widget::resizeGL(int w, int h)

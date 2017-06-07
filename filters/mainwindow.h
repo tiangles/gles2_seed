@@ -14,11 +14,19 @@ public:
     ~MainWindow();
 
 private:
+    void setupMenu();
+private:
     GLES2Widget* m_glWidget;
 
     // QWidget interface
 protected:
     void keyReleaseEvent(QKeyEvent *event);
+
+private slots:
+    void changeFliter(QAction *);
+
+private:
+    QString m_resourceFolder;
 };
 
 #endif // MAINWINDOW_H

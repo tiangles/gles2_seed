@@ -16,10 +16,11 @@ class GLES2Widget : public QOpenGLWidget, public QOpenGLFunctions
 {
     Q_OBJECT
 public:
-    explicit GLES2Widget(QWidget *parent = 0);
+    explicit GLES2Widget(const QString& resourceRoot, QWidget *parent = 0);
     ~GLES2Widget();
 
 public:
+    void setShader(const QString& shaderName);
     void keyReleaseEvent(QKeyEvent *event);
 
 protected:
@@ -29,6 +30,8 @@ protected:
     void paintGL();
 
 private:
+    QString m_resourceRoot;
+
     std::shared_ptr<GLES2::Renderer> m_renderer;
     std::shared_ptr<GLES2::Camera> m_camera;
 

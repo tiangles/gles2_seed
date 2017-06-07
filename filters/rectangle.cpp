@@ -16,14 +16,33 @@ Rectangle::Rectangle(const std::string& resourceFolder,
     ,m_renderer(renderer)
 {
     build();
-    setShader("Brightness");
 
     m_modelMatrix = std::make_shared<GLES2::Matrix4x4>();
     m_modelMatrix->buffer[0][0] = 6.38;
     m_modelMatrix->buffer[1][1] = 9.6;
 }
 
+void Rectangle::setShader(const std::string &name)
+{
+    auto shader = loadShader(name);
+    m_material->setShaderProgram(shader);
+}
+
 void Rectangle::build()
+{
+    auto mesh = createMesh();
+    auto texture = loadTexture();
+    auto shader = loadShader("ColorInvert.frag");
+
+    m_material = std::make_shared<GLES2::Material>();
+    m_material->addTexture(texture);
+    m_material->setShaderProgram(shader);
+
+    m_entity = std::make_shared<GLES2::Entity>(mesh);
+    m_entity->setMaterial(m_material);
+}
+
+std::shared_ptr<GLES2::Mesh> Rectangle::createMesh()
 {
     static const GLES2::VertexDataPT vert[] = {
         // front
@@ -47,27 +66,24 @@ void Rectangle::build()
 
     auto mesh = std::make_shared<GLES2::Mesh>();
     mesh->addSubMesh(subMesh);
-
-    m_entity = std::make_shared<GLES2::Entity>(mesh);
-
-
-    m_texture = std::make_shared<GLES2::Texture>();
-    m_texture->build(m_resourceFolder + "img/succulent.jpeg");
+    return mesh;
 }
 
-void Rectangle::setShader(const std::string &name)
+std::shared_ptr<GLES2::Texture> Rectangle::loadTexture()
+{
+    m_texture = std::make_shared<GLES2::Texture>();
+    m_texture->build(m_resourceFolder + "img/succulent.jpeg");
+    return m_texture;
+}
+
+std::shared_ptr<GLES2::ShaderProgram> Rectangle::loadShader(const std::string &name)
 {
     //create material
     m_shaderProgram = std::make_shared<GLES2::ShaderProgram>();
     std::string fileName = m_resourceFolder + "shaders/fliters/" + name;
     m_shaderProgram->loadFromFile(m_resourceFolder + "shaders/fliters/Fliters.vert",
-                                  fileName + ".frag");
-    m_shaderProgram->use();
-
-    auto mat = std::make_shared<GLES2::Material>();
-    mat->addTexture(m_texture);
-    mat->setShaderProgram(m_shaderProgram);
-    m_entity->setMaterial(mat);
+                                  fileName);
+    return m_shaderProgram;
 }
 
 void Rectangle::draw(std::shared_ptr<GLES2::Camera> camera) const

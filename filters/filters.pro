@@ -25,4 +25,5 @@ DISTFILES += \
     ../shaders/fliters/Fliters.vert \
     ../shaders/fliters/Embossment.frag \
     ../shaders/fliters/GaussianBlur.frag \
-    ../shaders/fliters/Brightness.frag
+    ../shaders/fliters/Brightness.frag \
+    ../shaders/fliters/ColorInvert.frag
