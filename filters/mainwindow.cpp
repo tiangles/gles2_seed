@@ -46,7 +46,7 @@ void MainWindow::setupMenu()
     connect(menuShaders, &QMenu::triggered, this, &MainWindow::changeFliter);
 
     setMenuBar(menuBar);
-    setWindowTitle(QStringLiteral("MainWindow"));
+    setWindowTitle(QStringLiteral("Fliters"));
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event)
