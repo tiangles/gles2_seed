@@ -1,5 +1,7 @@
 #include "shaderprogram.h"
 #include "matrix4x4.h"
+#include "renderer.h"
+#include "renderstate.h"
 #include <fstream>
 
 using namespace GLES2;
@@ -55,10 +57,10 @@ bool ShaderProgram::loadFromFile(const std::string &vertexFile, const std::strin
     return load(readShader(vertexFile), readShader(fragmentFile));
 }
 
-bool ShaderProgram::use()
+bool ShaderProgram::use(Renderer& render)
 {
     if(m_glProgram != 0){
-        glUseProgram(m_glProgram);
+        render.getRenderState().shaderProgram(m_glProgram);
         return true;
     }
     return false;

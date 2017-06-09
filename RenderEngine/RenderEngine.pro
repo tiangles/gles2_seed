@@ -16,7 +16,8 @@ SOURCES += \
     ../RenderEngine/subentity.cpp \
     ../RenderEngine/renderer.cpp \
     ../RenderEngine/batch.cpp \
-    ../RenderEngine/flyingcamera.cpp
+    ../RenderEngine/flyingcamera.cpp \
+    ../RenderEngine/renderstate.cpp
 
 
 HEADERS += \
@@ -37,4 +38,5 @@ HEADERS += \
     ../RenderEngine/subentity.h \
     ../RenderEngine/renderer.h \
     ../RenderEngine/batch.h \
-    ../RenderEngine/flyingcamera.h
+    ../RenderEngine/flyingcamera.h \
+    ../RenderEngine/renderstate.h

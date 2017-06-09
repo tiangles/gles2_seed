@@ -6,6 +6,7 @@
 
 namespace GLES2 {
 class Matrix4x4;
+class Renderer;
 
 class ShaderProgram: private QOpenGLFunctions
 {
@@ -16,7 +17,7 @@ public:
 public:
     bool load(const std::string& vertexSrc, const std::string& fragmentSrc);
     bool loadFromFile(const std::string& vertexFile, const std::string& fragmentFile);
-    bool use();
+    bool use(Renderer& render);
 
     void setUniformi(const std::string& name, int value);
     void setUniformf(const std::string& name, float value);

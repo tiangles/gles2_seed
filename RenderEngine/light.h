@@ -4,6 +4,7 @@
 
 namespace GLES2 {
 class ShaderProgram;
+class Renderer;
 
 class Light
 {
@@ -17,7 +18,7 @@ public:
     Light(Type type): m_type(type){}
 
 public:
-    void apply(std::shared_ptr<ShaderProgram> shader);
+    void apply(Renderer& renderer, std::shared_ptr<ShaderProgram> shader);
 
     void setPosition(const vec3& pos) { m_lightPos = pos;}
     void setAmbient(const vec4& ambient){ m_ambient = ambient; }

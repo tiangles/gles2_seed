@@ -23,6 +23,6 @@ std::shared_ptr<RenderOperation> SubEntity::getRenderOperation() const
     ro->vertex = m_subMesh->getVertex();
     ro->indices = m_subMesh->getIndices();
     ro->shader = m_material->shaderProgram();
-    ro->textures = m_material->textures();
+    ro->textureUnits = m_material->textureUnits();
     return std::move(ro);
 }

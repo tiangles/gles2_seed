@@ -1,10 +1,11 @@
 #include "renderer.h"
+#include "renderstate.h"
 #include "matrix4x4.h"
 #include "renderoperation.h"
 #include "camera.h"
 #include "shaderprogram.h"
 #include "vertex.h"
-#include "texture.h"
+#include "textureunit.h"
 
 using namespace GLES2;
 
@@ -12,12 +13,12 @@ Renderer::Renderer()
 {
     m_modelViewMatrix = std::make_shared<Matrix4x4>();
     m_modelViewProjMatrix = std::make_shared<Matrix4x4>();
+    m_renderState = new RenderState();
 }
 
-void Renderer::setShaderProgram(std::shared_ptr<ShaderProgram> shader)
+RenderState &Renderer::getRenderState()
 {
-    m_shader = shader;
-    m_shader->use();
+    return *m_renderState;
 }
 
 void Renderer::updateProjection(std::shared_ptr<Camera> camera, std::shared_ptr<Matrix4x4> modelMatrix)
@@ -38,9 +39,10 @@ void Renderer::updateProjection(std::shared_ptr<Camera> camera, std::shared_ptr<
 void Renderer::render(std::shared_ptr<RenderOperation> ro)
 {
     ro->vertex->bind(m_shader);
-    for(size_t i=0; i<ro->textures.size(); ++i){
-        ro->textures[i]->bind(i);
+    for(std::shared_ptr<TextureUnit>& textureUnit: ro->textureUnits){
+        textureUnit->bind(getRenderState());
     }
+
     ro->indices->draw();
 }
 
@@ -51,7 +53,8 @@ void Renderer::render(std::shared_ptr<Camera> /*cam*/, std::shared_ptr<Matrix4x4
 
 void Renderer::render(std::shared_ptr<Camera> camera, std::shared_ptr<Matrix4x4> modelMatrix, std::shared_ptr<RenderOperation> ro)
 {
-    setShaderProgram(ro->shader);
+    m_shader = ro->shader;
+    m_shader->use(*this);
     updateProjection(camera, modelMatrix);
     render(ro);
 }

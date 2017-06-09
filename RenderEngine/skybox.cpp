@@ -90,14 +90,15 @@ void Skybox::create(const std::string& resRoot, std::vector<std::string> texture
 
         auto mat = std::make_shared<Material>();
         mat->setShaderProgram(m_shaderProgram);
-        mat->addTexture(tex);
+
+        mat->addTexture(tex, 0);
         m_entity->getSubEntities()[i]->setMaterial(mat);
     }
 }
 
 void Skybox::render(std::shared_ptr<Camera> camera)
 {
-    m_shaderProgram->use();
+    m_shaderProgram->use(*m_renderer);
     vec3 cameraPos = camera->position();
     m_modelMatrix->buffer[0][3] = cameraPos.x;
     m_modelMatrix->buffer[1][3] = cameraPos.y;

@@ -11,7 +11,8 @@ public:
     ~Texture();
 public:
     void build(const std::string& path);
-    void bind(GLuint texUnit);
+    GLuint texId(){ return m_texID; }
+    GLenum target() { return GL_TEXTURE_2D; }
 
 private:
     GLuint m_texID;
